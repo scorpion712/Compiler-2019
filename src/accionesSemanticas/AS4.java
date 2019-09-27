@@ -1,30 +1,32 @@
 package accionesSemanticas;
 
-import analizadorLexico.BufferLectura;
+import analizadorLexico.ReaderBuffer;
 import analizadorLexico.Token;
-import globales.TablaSimbolos;
+import globales.SymbolTable;
 
-public class AS4 implements AccionSemantica {
+public class AS4 implements SemanticAction {
 
-	public Token ejecutar(BufferLectura pf, StringBuilder lexema, char ultimo_caracter) {
+	public Token execute(ReaderBuffer pf, StringBuilder lexema, char ultimo_caracter) {
+            /*
 		//Contaste entera larga, verificar limite y agregar.
 		long cte = Long.parseLong(lexema.toString());
 		if (cte > Math.pow(2, 31)) {
-			System.out.println("Linea " + pf.getNroLinea() + ": (AL) WARNING: Constante fuera del rango permitido. (integer = "+ (long) cte +")");
+			System.out.println("Linea " + pf.getLine() + ": (AL) WARNING: Constante fuera del rango permitido. (integer = "+ (long) cte +")");
 			cte = (long)Math.pow(2, 31);
-			System.out.println("Linea " + pf.getNroLinea() + ": (AL) WARNING: Se le asignara el mayor valor permitido. ("+ (long) cte +")");
+			System.out.println("Linea " + pf.getLine() + ": (AL) WARNING: Se le asignara el mayor valor permitido. ("+ (long) cte +")");
 		}
-		Token token = new Token(TablaSimbolos.getID("cte_larga"), Long.toString(cte),"Constante entera larga");
-		token.addAtributo("Tipo", "linteger");
-		TablaSimbolos.addSimbolo(token);
-		Token t = TablaSimbolos.getSimbolo(Long.toString(cte));
-		if (t.getAtributo("contador") == null) {
-			t.addAtributo("contador", "1");
+		Token token = new Token(SymbolTable.getID("cte_larga"), Long.toString(cte),"Constante entera larga");
+		token.addAttribute("Tipo", "linteger");
+		SymbolTable.addSymbol(token);
+		Token t = SymbolTable.getSymbol(Long.toString(cte));
+		if (t.getAttribute("contador") == null) {
+			t.addAttribute("contador", "1");
 		} else {
-			int contador = Integer.parseInt(t.getAtributo("contador")) + 1 ;
-			t.addAtributo("contador", String.valueOf(contador));
+			int contador = Integer.parseInt(t.getAttribute("contador")) + 1 ;
+			t.addAttribute("contador", String.valueOf(contador));
 		}
-		return token;
+		return token;*/
+            return null;
 	}
 
 }

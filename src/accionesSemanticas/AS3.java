@@ -1,30 +1,33 @@
 package accionesSemanticas;
 
-import analizadorLexico.BufferLectura;
+import analizadorLexico.ReaderBuffer;
 import analizadorLexico.Token;
-import globales.TablaSimbolos;
+import globales.SymbolTable;
 
-public class AS3 implements AccionSemantica {
+public class AS3 implements SemanticAction {
 
-	public Token ejecutar(BufferLectura pf, StringBuilder lexema, char ultimo_caracter) {
+	public Token execute(ReaderBuffer pf, StringBuilder lexema, char ultimo_caracter) {
+            /*
 		//Contaste entera, verificar limite y agregar.
 		long cte = Long.parseLong(lexema.toString());
 		if (cte > Math.pow(2, 15)) {
-			System.out.println("Linea " + pf.getNroLinea() + ": (AL) WARNING: Constante fuera del rango permitido. (integer = "+ (int) cte +")");
+			System.out.println("Linea " + pf.getLine() + ": (AL) WARNING: Constante fuera del rango permitido. (integer = "+ (int) cte +")");
 			cte = (long)Math.pow(2, 15);
-			System.out.println("Linea " + pf.getNroLinea() + ": (AL) WARNING: Se le asignara el mayor valor permitido. ("+ (int) cte +")");
+			System.out.println("Linea " + pf.getLine() + ": (AL) WARNING: Se le asignara el mayor valor permitido. ("+ (int) cte +")");
 		}
-		Token token = new Token(TablaSimbolos.getID("cte"), Long.toString(cte),"Constante entera");
-		token.addAtributo("Tipo", "integer");
-		TablaSimbolos.addSimbolo(token);
-		Token t = TablaSimbolos.getSimbolo(Long.toString(cte));
-		if (t.getAtributo("contador") == null) {
-			t.addAtributo("contador", "1");
+		Token token = new Token(SymbolTable.getID("cte"), Long.toString(cte),"Constante entera");
+		token.addAttribute("Tipo", "integer");
+		SymbolTable.addSymbol(token);
+		Token t = SymbolTable.getSymbol(Long.toString(cte));
+		if (t.getAttribute("contador") == null) {
+			t.addAttribute("contador", "1");
 		} else {
-			int contador = Integer.parseInt(t.getAtributo("contador")) + 1 ;
-			t.addAtributo("contador", String.valueOf(contador));
+			int contador = Integer.parseInt(t.getAttribute("contador")) + 1 ;
+			t.addAttribute("contador", String.valueOf(contador));
 		}
 		return token;
+                */
+            return null;
 	}
 
 }

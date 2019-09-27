@@ -1,15 +1,15 @@
 package accionesSemanticas;
 
-import analizadorLexico.BufferLectura;
+import analizadorLexico.ReaderBuffer;
 import analizadorLexico.Token;
-import globales.TablaSimbolos;
+import globales.SymbolTable;
 
-public class AS6 implements AccionSemantica {
+public class AS6 implements SemanticAction {
 
-	public Token ejecutar(BufferLectura pf, StringBuilder lexema, char ultimo_caracter) {
+	public Token execute(ReaderBuffer pf, StringBuilder lexema, char ultimo_caracter) {/*
 		// Retornar el operador
 		lexema.append(ultimo_caracter);
-		return new Token(TablaSimbolos.getID(lexema.toString()),lexema.toString(), null);
+		return new Token(SymbolTable.getID(lexema.toString()),lexema.toString(), null);*/return null;
 	}
 
 }

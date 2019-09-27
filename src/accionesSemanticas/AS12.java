@@ -1,11 +1,11 @@
 package accionesSemanticas;
 
-import analizadorLexico.BufferLectura;
+import analizadorLexico.ReaderBuffer;
 import analizadorLexico.Token;
 
-public class AS12 implements AccionSemantica {
+public class AS12 implements SemanticAction {
 
-	public Token ejecutar(BufferLectura pf, StringBuilder lexema, char ultimo_caracter) {
+	public Token execute(ReaderBuffer pf, StringBuilder lexema, char ultimo_caracter) {
 		//descartar cadena
 		lexema.setLength(0);
 		return null;
