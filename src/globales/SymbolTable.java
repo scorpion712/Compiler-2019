@@ -33,7 +33,7 @@ public final class SymbolTable {
     static final int NOT_EQUAL = 305; // <>
     static final int ASIGNATION = 306; // := 
     static final int NUMERIC_CONST = 307;
-
+    
     private static SymbolTable symbolTable;
     
     public static SymbolTable getInstance() {
@@ -49,49 +49,39 @@ public final class SymbolTable {
         initialize();
     }
     
-    private void initialize() {
-        /*
-         son necesarios en la TS ?
-        
-        identificadores.put("(", 40);
-        identificadores.put(")", 41);
-        identificadores.put("*", 42);
-        identificadores.put("+", 43);
-        identificadores.put(",", 44);
-        identificadores.put("-", 45);
-        identificadores.put("/", 47);
-        identificadores.put(":", 58);
-        identificadores.put(";", 59);
-        identificadores.put("<", 60);
-        identificadores.put("=", 61);
-        identificadores.put(">", 62);
-        identificadores.put("{", 123);
-        identificadores.put("}", 125);
-        */
+    private void initialize() { 
+        identifiers.put("(", 40);
+        identifiers.put(")", 41);
+        identifiers.put("*", 42);
+        identifiers.put("+", 43);
+        identifiers.put(",", 44);
+        identifiers.put("-", 45);
+        identifiers.put("/", 47);
+        identifiers.put(":", 58);
+        identifiers.put(";", 59);
+        identifiers.put("<", 60);
+        identifiers.put("=", 61);
+        identifiers.put(">", 62);
+        identifiers.put("[", 91); 
+        identifiers.put("]", 93);
         identifiers.put("if", IF);
         identifiers.put("else", ELSE);
         identifiers.put("end_if", END_IF);
         identifiers.put("print", PRINT);
-        identifiers.put("integer", INT);
+        identifiers.put("integer", INT);    // numeric const
         identifiers.put("begin", BEGIN);
         identifiers.put("end", END);
-        identifiers.put("long", LONG);
+        identifiers.put("LONG", LONG);
         identifiers.put("for_each", FOR_EACH);
         identifiers.put("in", IN);
-        /*
-        identificadores.put("void", 265);
-        identificadores.put("fun", 266);
-        identificadores.put("return", 267);
-        */
         identifiers.put("id", ID);
         identifiers.put("string", STRING_CONST);
-        //identificadores.put("cte_larga", 271);
         identifiers.put(">=", GREATER_EQUAL);
         identifiers.put("<=", LESS_EQUAL);
         identifiers.put("==", EQUAL);
         identifiers.put("<>", NOT_EQUAL);
         identifiers.put(":=", ASIGNATION);
-        identifiers.put("cte", NUMERIC_CONST);
+       //identifiers.put("cte", NUMERIC_CONST);
     }
 
     public boolean containsID(String id) { 
