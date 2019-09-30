@@ -31,8 +31,7 @@ public final class SymbolTable {
     static final int LESS_EQUAL = 303; // <=
     static final int EQUAL = 304;  // ==
     static final int NOT_EQUAL = 305; // <>
-    static final int ASIGNATION = 306; // := 
-    static final int NUMERIC_CONST = 307;
+    static final int ASIGNATION = 306; // :=  
     
     private static SymbolTable symbolTable;
     
@@ -57,7 +56,7 @@ public final class SymbolTable {
         identifiers.put(",", 44);
         identifiers.put("-", 45);
         identifiers.put("/", 47);
-        identifiers.put(":", 58);
+        // identifiers.put(":", 58);   not recognized, just used to assignment
         identifiers.put(";", 59);
         identifiers.put("<", 60);
         identifiers.put("=", 61);

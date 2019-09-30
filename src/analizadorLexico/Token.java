@@ -49,7 +49,7 @@ public class Token {
  
 
     public String toString() {
-        return "Token: " + id + " | Lexema: " + lexeme + " | " + "Descripción: " + description + " | Tipo: " + type;
+        return "Token: " + id + " | Lexeme: " + lexeme + " | " + "Description: " + description + " | Type: " + type;
         /*
         if (description == null) {
             return lexeme;

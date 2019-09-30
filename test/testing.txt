@@ -1,0 +1,26 @@
+max_integerConst = 32767
+min_integerConst = 0.00003051757
+max_LONG_Const = 0.00000000046566129
+min_LONG_Const = 2147483647
+LONG_Const_outofbound = 2147483648
+identifierWithMoreThan25Characters
+_invalidIdentifier
+validID < valid_ID
+validId > valid_1
+valid_1 := max_integerConst
+if (min_LONG_Const <= valid)
+else (max_integerConst >= max_integerConst)
+end_if
+for_each x do begin x := x+1 end
+max_integerConst <> min_LONG_Const
+int a, b = 25 / c
+print(a);
+%this is a string%
+%this also	is a string 234 & +-,;% 
+%this is a bad string
+/+ multilene
+comment 
++/
+/+ unclosed
+multiline
+comment

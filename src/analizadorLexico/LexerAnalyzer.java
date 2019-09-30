@@ -19,7 +19,7 @@ public class LexerAnalyzer {
         /*E4*/ {11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
         /*E5*/ {11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
         /*E6*/ {11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-        /*E7*/ {7, 7, 7, 7, 7, 7, 7, 7, 11, 7, 7, 11, 7, 7, 11},
+        /*E7*/ {7, 7, 7, 7, 7, 7, 7, 7, 11, 7, 7, 0, 7, 7, 11},
         /*E8*/ {11, 11, 9, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
         /*E9*/ {9, 9, 10, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 11},
         /*E10*/ {9, 9, 10, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 11},};
@@ -42,15 +42,14 @@ public class LexerAnalyzer {
         SemanticAction AS6 = new SAGenerateNotEqual();
         SemanticAction AS7 = new SAGenerateLessEqual();
         SemanticAction AS8 = new SAGenerateEqual();
-        // Accion semantica nula.
-        SemanticAction accion_semantica_nula = new SANull();  //Usada para evitar null pointer mientras se construyen las AS restantes
-        SemanticAction AS9 = accion_semantica_nula;
+        SemanticAction AS9 = new SAGenerateString();
         SemanticAction AS10 = new SAGenerateNewLine();
-        SemanticAction AS11 = accion_semantica_nula;
-        SemanticAction AS12 = accion_semantica_nula;
-        SemanticAction AS13 = accion_semantica_nula;
-        
+        SemanticAction AS11 = new SACommentWarning();
+        SemanticAction AS12 = new SAGenerateSimpleSymbol();
+        SemanticAction AS13 = new SASymbolWarning(); 
 
+        SemanticAction AS14 = new SAStringWarning();
+        
         // Initialize semactic action matrix
         semanticActionMatrix = new SemanticAction[11][15];
 
@@ -65,11 +64,11 @@ public class LexerAnalyzer {
         semanticActionMatrix[0][7] = AS0;
         semanticActionMatrix[0][8] = AS0;
         semanticActionMatrix[0][9] = AS0;
-        semanticActionMatrix[0][10] = AS13;//?
+        semanticActionMatrix[0][10] = new SANull();
         semanticActionMatrix[0][11] = AS10;
-        semanticActionMatrix[0][12] = AS13;// ?
+        semanticActionMatrix[0][12] = AS13;
         semanticActionMatrix[0][13] = AS13;
-        semanticActionMatrix[0][14] = AS13;
+        semanticActionMatrix[0][14] = new SANull(); // EOF
 
         // State 1
         semanticActionMatrix[1][0] = AS0;
@@ -185,10 +184,10 @@ public class LexerAnalyzer {
         semanticActionMatrix[7][8] = AS9;
         semanticActionMatrix[7][9] = AS0;
         semanticActionMatrix[7][10] = AS0;
-        semanticActionMatrix[7][11] = AS0;
-        semanticActionMatrix[7][12] = AS13; // Deberia lanzar warning cadena no valida por falta de cierre
+        semanticActionMatrix[7][11] = AS14; // \n deberia lanzar warning cadena no valida por falta de cierre
+        semanticActionMatrix[7][12] = AS0; 
         semanticActionMatrix[7][13] = AS0;
-        semanticActionMatrix[7][14] = AS13; // Deberia lanzar warning cadena no valida por falta de cierre
+        semanticActionMatrix[7][14] = AS14; // EOF debería lanzar warning por cadena no cerrada
 
         // State 8
         semanticActionMatrix[8][0] = AS4;
@@ -219,7 +218,7 @@ public class LexerAnalyzer {
         semanticActionMatrix[9][8] = AS0;
         semanticActionMatrix[9][9] = AS0;
         semanticActionMatrix[9][10] = AS0;
-        semanticActionMatrix[9][11] = AS0;
+        semanticActionMatrix[9][11] = AS10;
         semanticActionMatrix[9][12] = AS0;
         semanticActionMatrix[9][13] = AS0;
         semanticActionMatrix[9][14] = AS11;
@@ -318,25 +317,17 @@ public class LexerAnalyzer {
         int currentState = INITIAL_STATE;
         Token token = null;
         while (currentState != FINAL_STATE) {
-            int currentCharacter = 0; // set null character
+            int currentCharacter = 0; // set null (eof) character
             if (notEOF()) {
                 currentCharacter = fontCode.getCaracter(); // get the next character
             }
-            // perform transition and execute the semantic action (if it has) 
-            // System.err.println("Estado " + currentState + " caracter leido " + (char)currentCharacter + " ascii  " + currentCharacter);
-            SemanticAction as = semanticActionMatrix[currentState][getSymbol(currentCharacter)];
+            // perform transition and execute the semantic action 
+            SemanticAction as = semanticActionMatrix[currentState][getSymbol(currentCharacter)]; 
             token = as.execute(fontCode, lexeme, (char) currentCharacter);
-            currentState = transitionMatrix[currentState][getSymbol(currentCharacter)];
-            // System.err.println("Siguiente estado: " + currentState);
-        }
-        if (token != null) {
-            Parser.yylval = new ParserVal(token.getLexeme());
-            //System.out.println("Linea " + programaFuente.getNroLinea() + ": (AL) " + devolucion.imprimir());
-            return token;
+            currentState = transitionMatrix[currentState][getSymbol(currentCharacter)]; 
+        } 
 
-        }
-
-        return null; // error
+        return token; // or error
     }
 
 }

@@ -36,9 +36,11 @@ public class Compiler2019 {
             archivo.close();
             inflateMenu(sb);
         } catch (FileNotFoundException ex) {
-            System.err.println("Archivo no encontrado. " + ex.getMessage());
+            //System.err.println("Archivo no encontrado. " + ex.getMessage());
+            System.err.println("Archivo no encontrado.");
+            loadFile("");
         } catch (IOException ex) {
-            System.err.println("IOException. " + ex.getMessage());
+            System.err.println("IOException. " + ex.getMessage()); 
         }
     }
 
@@ -108,7 +110,8 @@ public class Compiler2019 {
             System.out.println(t.toString());
         }
         System.out.println("\n______________________________________________________________");
-        System.out.println("Tabla de Simbolos: \n" + SymbolTable.getInstance().print());
+        System.out.println("Tabla de Simbolos: \n______________________________________________________________\n"
+                + SymbolTable.getInstance().print());
         Scanner scan = new Scanner(System.in);
         System.out.println("Presione enter para continuar."); 
         scan.nextLine();
