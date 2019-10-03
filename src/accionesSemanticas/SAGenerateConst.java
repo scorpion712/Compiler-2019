@@ -13,6 +13,7 @@ public class SAGenerateConst implements SemanticAction {
     // this two constants may have the same string acording to INT and LONG values in identifiers map  from SymbolTable.class
     private static final String NUMERIC_CONST = "cte";
     private static final String LONG = "LONG";
+    private static final String INT = "integer";
 
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {
@@ -25,7 +26,8 @@ public class SAGenerateConst implements SemanticAction {
          */
         Token token; 
         if (constant >= -Math.pow(2, MAX_BITS_INT) && constant <= Math.pow(2, MAX_BITS_INT) - 1) { // it's an integer
-            token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), NUMERIC_CONST);
+            //token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), NUMERIC_CONST);
+            token = new Token(SymbolTable.getInstance().getID(INT), Long.toString(constant), NUMERIC_CONST);
         } else {            //  it's a long
             if (constant < -Math.pow(2, MAX_BITS_ULONG)) {  // overflow
                 System.out.println("    Lexical Warning at line " + fc.getLine() + ": constant out of range. Min defined " + Math.pow(2, -MAX_BITS_ULONG) + ".");
@@ -36,7 +38,8 @@ public class SAGenerateConst implements SemanticAction {
                     constant = (long) Math.pow(2, MAX_BITS_ULONG) - 1;
                 }
             }
-            token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), LONG);
+            //token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), LONG);
+            token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), NUMERIC_CONST); // 
         }
         SymbolTable.getInstance().addSymbol(token);
         return token;
