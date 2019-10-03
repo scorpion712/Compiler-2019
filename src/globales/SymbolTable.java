@@ -1,6 +1,5 @@
 package globales;
 
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -31,7 +30,7 @@ public final class SymbolTable {
     private static final int LESS_EQUAL = 303; // <=
     private static final int EQUAL = 304;  // ==
     private static final int DISTINCT = 305; // <>
-    private static final int ASIGNATION = 306; // :=  
+    private static final int ASSIGN = 306; // :=  
     private static final int NUMERIC_CONST = 307; 
     
     // Usefull identifiers names
@@ -39,7 +38,7 @@ public final class SymbolTable {
     private static final String LESS_EQUAL_ID = "<="; 
     private static final String EQUAL_ID = "==";  
     private static final String DISTINCT_ID = "<>";
-    private static final String ASIGNATION_ID = ":=";  
+    private static final String ASSIGN_ID = ":=";  
     private static final String GREATER_THAN = ">";
     private static final String LESS_THAN = "<";
     
@@ -89,7 +88,7 @@ public final class SymbolTable {
         identifiers.put(LESS_EQUAL_ID, LESS_EQUAL);
         identifiers.put(EQUAL_ID, EQUAL);
         identifiers.put(DISTINCT_ID, DISTINCT);
-        identifiers.put(ASIGNATION_ID, ASIGNATION);
+        identifiers.put(ASSIGN_ID, ASSIGN);
         identifiers.put("cte", NUMERIC_CONST);
     }
 
