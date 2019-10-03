@@ -11,7 +11,7 @@ public class SAGenerateConst implements SemanticAction {
     private static final int MAX_BITS_ULONG = 31;
 
     // this two constants may have the same string acording to INT and LONG values in identifiers map  from SymbolTable.class
-    private static final String INT = "integer";
+    private static final String NUMERIC_CONST = "cte";
     private static final String LONG = "LONG";
 
     @Override
@@ -25,7 +25,7 @@ public class SAGenerateConst implements SemanticAction {
          */
         Token token; 
         if (constant >= -Math.pow(2, MAX_BITS_INT) && constant <= Math.pow(2, MAX_BITS_INT) - 1) { // it's an integer
-            token = new Token(SymbolTable.getInstance().getID(INT), Long.toString(constant), INT);
+            token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), NUMERIC_CONST);
         } else {            //  it's a long
             if (constant < -Math.pow(2, MAX_BITS_ULONG)) {  // overflow
                 System.out.println("    Lexical Warning at line " + fc.getLine() + ": constant out of range. Min defined " + Math.pow(2, -MAX_BITS_ULONG) + ".");

@@ -4,7 +4,7 @@ import analizadorLexico.ReaderBuffer;
 import analizadorLexico.Token;
 import globales.SymbolTable;
 
-public class SAGenerateNotEqual implements SemanticAction {
+public class SAGenerateDistinct implements SemanticAction {
 
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {

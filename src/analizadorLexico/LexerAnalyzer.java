@@ -39,7 +39,7 @@ public class LexerAnalyzer {
         SemanticAction AS3 = new SAGenerateAssignment();
         SemanticAction AS4 = new SAGenerateOperator();
         SemanticAction AS5 = new SAGenerateGreaterEqual();
-        SemanticAction AS6 = new SAGenerateNotEqual();
+        SemanticAction AS6 = new SAGenerateDistinct();
         SemanticAction AS7 = new SAGenerateLessEqual();
         SemanticAction AS8 = new SAGenerateEqual();
         SemanticAction AS9 = new SAGenerateString();

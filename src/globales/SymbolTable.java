@@ -13,25 +13,36 @@ public final class SymbolTable {
     private Map<String, Token> symbols;
     
     // Languaje reserved words. Used to identify tokens
-    static final int IF = 257;
-    static final int ELSE = 258;
-    static final int END_IF = 259;
-    static final int PRINT = 260;
-    static final int INT = 261;
-    static final int BEGIN = 262;
-    static final int END = 263;
-    static final int LONG = 264;
-    static final int FOR_EACH = 265;
-    static final int IN = 266;
+    private static final int IF = 257;
+    private static final int ELSE = 258;
+    private static final int END_IF = 259;
+    private static final int PRINT = 260;
+    private static final int INT = 261;
+    private static final int BEGIN = 262;
+    private static final int END = 263;
+    private static final int LONG = 264;
+    private static final int FOR_EACH = 265;
+    private static final int IN = 266;
 
     // Token constants that not have an ASCII representation
-    static final int ID = 300;
-    static final int STRING_CONST = 301;
-    static final int GREATER_EQUAL = 302; // >= 
-    static final int LESS_EQUAL = 303; // <=
-    static final int EQUAL = 304;  // ==
-    static final int NOT_EQUAL = 305; // <>
-    static final int ASIGNATION = 306; // :=  
+    private static final int ID = 300;
+    private static final int STRING_CONST = 301;
+    private static final int GREATER_EQUAL = 302; // >= 
+    private static final int LESS_EQUAL = 303; // <=
+    private static final int EQUAL = 304;  // ==
+    private static final int DISTINCT = 305; // <>
+    private static final int ASIGNATION = 306; // :=  
+    private static final int NUMERIC_CONST = 307; 
+    
+    // Usefull identifiers names
+    private static final String GREATER_EQUAL_ID = ">="; 
+    private static final String LESS_EQUAL_ID = "<="; 
+    private static final String EQUAL_ID = "==";  
+    private static final String DISTINCT_ID = "<>";
+    private static final String ASIGNATION_ID = ":=";  
+    private static final String GREATER_THAN = ">";
+    private static final String LESS_THAN = "<";
+    
     
     private static SymbolTable symbolTable;
     
@@ -56,11 +67,10 @@ public final class SymbolTable {
         identifiers.put(",", 44);
         identifiers.put("-", 45);
         identifiers.put("/", 47);
-        // identifiers.put(":", 58);   not recognized, just used to assignment
         identifiers.put(";", 59);
-        identifiers.put("<", 60);
+        identifiers.put(LESS_THAN, 60);
         identifiers.put("=", 61);
-        identifiers.put(">", 62);
+        identifiers.put(GREATER_THAN, 62);
         identifiers.put("[", 91); 
         identifiers.put("]", 93);
         identifiers.put("if", IF);
@@ -75,12 +85,12 @@ public final class SymbolTable {
         identifiers.put("in", IN);
         identifiers.put("id", ID);
         identifiers.put("string", STRING_CONST);
-        identifiers.put(">=", GREATER_EQUAL);
-        identifiers.put("<=", LESS_EQUAL);
-        identifiers.put("==", EQUAL);
-        identifiers.put("<>", NOT_EQUAL);
-        identifiers.put(":=", ASIGNATION);
-       //identifiers.put("cte", NUMERIC_CONST);
+        identifiers.put(GREATER_EQUAL_ID, GREATER_EQUAL);
+        identifiers.put(LESS_EQUAL_ID, LESS_EQUAL);
+        identifiers.put(EQUAL_ID, EQUAL);
+        identifiers.put(DISTINCT_ID, DISTINCT);
+        identifiers.put(ASIGNATION_ID, ASIGNATION);
+        identifiers.put("cte", NUMERIC_CONST);
     }
 
     public boolean containsID(String id) { 
