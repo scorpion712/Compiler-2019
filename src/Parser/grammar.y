@@ -24,15 +24,15 @@ declarative_statements	:	variable_declaration_statement
 variable_declaration_statement	:	type 	variable_list 	';' {System.out.println("variable declaration " + $0);}
 								;
 
-colection_declaration_statement :	type ID initial_value_list ';' {System.out.println("colection declaration " + $0 + $1);}
+colection_declaration_statement :	type ID '['initial_value_list']' ';' {System.out.println("colection declaration " + $0 + $1);}
 								;
 
 variable_list 	:	ID	{System.out.println("variable id: " + $0);}
 				|	variable_list ',' ID
 				;
 
-initial_value_list 	: 	'[' NUMERIC_CONST ']'	{System.out.println("Numeric const : " + $0);}
-					|	'[' index_list ']'
+initial_value_list 	: 	 NUMERIC_CONST 	{System.out.println("Numeric const : " + $0);}
+					|	 index_list 
 					;
 
 index_list 	: index_list ',' index
