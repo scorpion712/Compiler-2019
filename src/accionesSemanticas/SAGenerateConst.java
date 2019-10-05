@@ -13,7 +13,7 @@ public class SAGenerateConst implements SemanticAction {
     // this two constants may have the same string acording to INT and LONG values in identifiers map  from SymbolTable.class
     private static final String NUMERIC_CONST = "cte";
     private static final String LONG = "LONG";
-    private static final String INT = "integer";
+    private static final String INT = "int";
 
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {

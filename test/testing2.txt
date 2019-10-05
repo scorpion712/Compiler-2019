@@ -1,0 +1,22 @@
+int a,b,c,d;
+INT e;
+int A;
+int colection_ERROR[2]; 
+long colection_2[1,_,_3];
+a := %cadena%; 
+print(%print_string%); 
+IF := 1; 
+b:=c*d+5/21; 
+colection_2[0]:=colection_2[1] + 1;
+if (a+b <= 21) 
+begin
+for_each e in colection_2
+print(%printable string%);
+end
+end_if
+/+ This
+is 
+a comment.
+Ignore it.
++/ 	
+a := b/c+a; 

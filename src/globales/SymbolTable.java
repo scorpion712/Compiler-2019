@@ -76,7 +76,7 @@ public final class SymbolTable {
         identifiers.put("else", ELSE);
         identifiers.put("end_if", END_IF);
         identifiers.put("print", PRINT);
-        identifiers.put("integer", INT);    // numeric const
+        identifiers.put("int", INT);    // numeric const
         identifiers.put("begin", BEGIN);
         identifiers.put("end", END);
         identifiers.put("LONG", LONG);

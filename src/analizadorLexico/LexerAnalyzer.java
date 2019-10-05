@@ -1,7 +1,7 @@
-package analizadorLexico;
-
+package analizadorLexico;   
+import Parser.Parser;
+import Parser.ParserVal;
 import accionesSemanticas.*;
-import analizadorSintactico.*;
 
 public class LexerAnalyzer {
 
@@ -11,7 +11,7 @@ public class LexerAnalyzer {
     static final int INVALID_TOKEN = -1;
 
     private ReaderBuffer fontCode;
-    private int[][] transitionMatrix = {
+    private final int[][] transitionMatrix = {
         /*E0*/{1, 2, 11, 11, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 11},
         /*E1*/ {1, 1, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 1, 11, 11},
         /*E2*/ {11, 2, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
@@ -287,7 +287,6 @@ public class LexerAnalyzer {
 
     public int yylex() {
         StringBuilder lexeme = new StringBuilder();
-
         int currentState = INITIAL_STATE;
         Token token = null;
         while (currentState != FINAL_STATE) {
@@ -301,9 +300,9 @@ public class LexerAnalyzer {
             currentState = transitionMatrix[currentState][getSymbol(currentCharacter)];
         }
 
-        if (token != null) {
-            Parser.yylval = new ParserVal(token.getLexeme());
-            //System.out.println("Linea " + programaFuente.getNroLinea() + ": (AL) " + devolucion.imprimir());
+        if (token != null) { 
+            Parser.yyval = new ParserVal(token.getLexeme());
+            //System.out.println("/// Linea " + fontCode.getLine() + ": (AL) " + token.toString() + "///");
             return token.getID();
         }
 

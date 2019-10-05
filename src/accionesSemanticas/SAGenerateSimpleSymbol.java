@@ -9,7 +9,7 @@ public class SAGenerateSimpleSymbol implements SemanticAction{
 
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) { 
-        return new Token(SymbolTable.getInstance().getID(String.valueOf(lastCharacter)), lexeme.toString(), "");
+        return new Token(SymbolTable.getInstance().getID(String.valueOf(lastCharacter)), String.valueOf(lastCharacter), "");
     }
     
 }

@@ -1,5 +1,6 @@
 package compiler2019;
 
+import Parser.Parser;
 import java.io.FileInputStream;
 
 import analizadorLexico.LexerAnalyzer;
@@ -74,7 +75,7 @@ public class Compiler2019 {
                         lexer(sb);
                         break;
                     case 2:
-                        //parser(new LexerAnalyzer(sb));
+                        parser(new LexerAnalyzer(sb));
                         break;
                     case 3:
                         break;
@@ -117,4 +118,22 @@ public class Compiler2019 {
         scan.nextLine();
     }
 
+    private static void parser(LexerAnalyzer lexer) { 
+        new Parser(lexer).run();
+        /*int yyparse = parser.yyparse();
+        switch(yyparse) {
+            case 1: 
+                System.out.println("Parse fails.");
+                break;
+            case 0:
+                System.out.println("Parse OK.");
+                break;
+        }*/
+        System.out.println("______________________________________________________________\n");
+        SymbolTable.getInstance().print();
+        System.out.println("______________________________________________________________");
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Presione enter para continuar."); 
+        scan.nextLine();
+    }
 }
