@@ -1,24 +1,32 @@
+/+declarative+/
 int a,b,c,d; /+valid+/
-INT e; /+ not valid +/
-int A; /+valid +/
+int e; 
+long A; /+valid +/
 int colection_ERROR[2]; /+valid+/
 long colection_2[1,_,_3]; /+valid+/
+/+ invalid declarative +/
+INT g;
+LONG h;
+int j k;
+e;
+/+starting executable statements+/
 begin 
-a := %cadena%; /+valid+/
-print(%print_string%); /+valid+/
-IF := 1; /+valid+/
-b:=c*d+5/21; /+valid+/
-colection_2[0]:=colection_2[1] + 1; /+valid+/
-if (a+b <= 21) /+valid+/
-begin /+valid+/
+a := %cadena%; /+valid assign+/
+print(%print_string%); /+valid print+/
+IF := 1; /+valid assign. if is the key word, not IF+/
+b:=c*d+5/21; /+valid assign+/
+colection_2[0]:=colection_2[1] + 1; /+valid assign+/
+if (a+b <= 21) /+valid condition+/
 for_each e in colection_2 
 print(%printable string%); 
-end
+end_if /+ valid if +/	
+a := b/c+a; /+valid assign+/
+/+ invalid executables +/ 
+print(%string%
+if (a < b 
+for_each a in 
+print(%string1%)
+print(%string2%)
 end_if
-/+ This
-is 
-a comment.
-Ignore it.
-+/ 	
-a := b/c+a; /+valid+/
-end
+a = 10;
+end 
