@@ -48,7 +48,7 @@ public class LexerAnalyzer {
         SemanticAction AS12 = new SAGenerateSimpleSymbol();
         SemanticAction AS13 = new SASymbolWarning(); 
 
-        SemanticAction AS14 = new SAStringWarning();
+        SemanticAction AS14 = new SAStringWarning(); 
         
         // Initialize semactic action matrix
         semanticActionMatrix = new SemanticAction[11][15];
@@ -298,10 +298,13 @@ public class LexerAnalyzer {
             SemanticAction as = semanticActionMatrix[currentState][getSymbol(currentCharacter)];
             token = as.execute(fontCode, lexeme, (char) currentCharacter);
             currentState = transitionMatrix[currentState][getSymbol(currentCharacter)];
+            if (currentState == INITIAL_STATE) { // find a comment
+                lexeme = new StringBuilder();   // to discard the comment the lexeme empties
+            }
         }
 
         if (token != null) { 
-            Parser.yyval = new ParserVal(token.getLexeme());
+            //Parser.yylval = new ParserVal(token.getLexeme());
             //System.out.println("/// Linea " + fontCode.getLine() + ": (AL) " + token.toString() + "///");
             return token.getID();
         }
@@ -323,7 +326,10 @@ public class LexerAnalyzer {
             // perform transition and execute the semantic action 
             SemanticAction as = semanticActionMatrix[currentState][getSymbol(currentCharacter)]; 
             token = as.execute(fontCode, lexeme, (char) currentCharacter);
-            currentState = transitionMatrix[currentState][getSymbol(currentCharacter)]; 
+            currentState = transitionMatrix[currentState][getSymbol(currentCharacter)];
+            if (currentState == INITIAL_STATE) { // find a comment
+                lexeme = new StringBuilder();   // to discard the comment the lexeme empties
+            }
         } 
 
         return token; // or error

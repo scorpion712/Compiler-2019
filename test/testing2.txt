@@ -1,17 +1,18 @@
-int a,b,c,d;
-INT e;
-int A;
-int colection_ERROR[2]; 
-long colection_2[1,_,_3];
-a := %cadena%; 
-print(%print_string%); 
-IF := 1; 
-b:=c*d+5/21; 
-colection_2[0]:=colection_2[1] + 1;
-if (a+b <= 21) 
-begin
-for_each e in colection_2
-print(%printable string%);
+int a,b,c,d; /+valid+/
+INT e; /+ not valid +/
+int A; /+valid +/
+int colection_ERROR[2]; /+valid+/
+long colection_2[1,_,_3]; /+valid+/
+begin 
+a := %cadena%; /+valid+/
+print(%print_string%); /+valid+/
+IF := 1; /+valid+/
+b:=c*d+5/21; /+valid+/
+colection_2[0]:=colection_2[1] + 1; /+valid+/
+if (a+b <= 21) /+valid+/
+begin /+valid+/
+for_each e in colection_2 
+print(%printable string%); 
 end
 end_if
 /+ This
@@ -19,4 +20,5 @@ is
 a comment.
 Ignore it.
 +/ 	
-a := b/c+a; 
+a := b/c+a; /+valid+/
+end

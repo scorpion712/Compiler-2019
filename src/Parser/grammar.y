@@ -5,7 +5,7 @@
 	import globales.*;
 %}
 
-%token IF ELSE END_IF PRINT INT BEGIN END LONG FOR_EACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN NUMERIC_CONST GREATER_THAN LESS_THAN
+%token IF ELSE END_IF PRINT INT BEGIN END LONG FOR_EACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN NUMERIC_CONST 
 
 
 %left '+' '-'
@@ -14,33 +14,33 @@
 %%
 
 program	:		/* empty */ {System.out.println("EOF");}
-		|		statements {System.out.println("statements");}
+		|		statements  
 		;
 
-statements	:		declarative_statements {System.out.println("declarat");}
+statements	:		declarative_statements  
 			|		block_statements
 			|		statements 	declarative_statements
 			|		statements 	block_statements
 			;
 
-declarative_statements	:		variable_declaration_statement {System.out.println("var decl state");}
+declarative_statements	:		variable_declaration_statement  
 						|		colection_declaration_statement
 						;
 
-variable_declaration_statement	:		type variable_list ';'{System.out.println("variable declaration");}
-								|		error variable_list';' {System.out.println("Error. Variable type not declared.");}
+variable_declaration_statement	:		type var_list ';'	{System.out.println("variable declaration ok. Must print which variables were declared.");}   
 								|		type error ';' {System.out.println("Error. ID or ID list not declared.");}
+								|		error var_list {System.out.println("Error. Type is not defined.");}
 								;
 
-colection_declaration_statement :		type ID '['initial_value_list']' ';' {System.out.println("colection declaration ");}
+colection_declaration_statement :		type ID '['initial_value_list']' ';'  
 								;
 
-variable_list 	:		ID	{System.out.println("ID aca");}
-				|		error ';' {System.out.println("Error: No se encontro identificador.");}
-				|		variable_list ',' ID {System.out.println("var list");}
+var_list 	:		ID	 
+				|		error ';' {System.out.println("Error: Identifier not found.");}
+				|		var_list ',' ID  
 				;
 
-initial_value_list 	: 		 NUMERIC_CONST 	{System.out.println("Numeric const : ");}
+initial_value_list 	: 		 NUMERIC_CONST 	 
 					|		 index_list 
 					;
 
@@ -84,12 +84,12 @@ for_each_in_statement	:		FOR_EACH ID IN ID executional_block
 print_statement	:		PRINT '('STRING_CONST')' ';'
 				;
 
-condition 	:		expression LESS_THAN expression	 {System.out.println("Expresion " + $0);}
-			|		expression GREATER_THAN expression 	{System.out.println("Expresion " + $0 + " > " + $2);}
-			|		expression LESS_EQUAL expression 	{System.out.println("Expresion " + $0 + " <= " + $2);}
-			| 		expression GREATER_EQUAL expression	{System.out.println("Expresion " + $0 + " <= " + $2);}
-			| 		expression EQUAL expression			{System.out.println("Expresion " + $0 + " == " + $2);}
-			|		expression DISTINCT expression		{System.out.println("Expresion " + $0 + " <> " + $2);}
+condition 	:		expression '<' expression	 
+			|		expression '>' expression 	 
+			|		expression LESS_EQUAL expression 	 
+			| 		expression GREATER_EQUAL expression	 
+			| 		expression EQUAL expression			 
+			|		expression DISTINCT expression		 
 			;
 
 expression	:		expression '+' term
@@ -102,8 +102,8 @@ term	:		term '*' factor
 		| 		factor
 		;
 
-type	:		INT {System.out.println("Soy tipo INT");}
-		| 		LONG {System.out.println("LONG");}
+type	:		INT  
+		| 		LONG   
 		;
 
 factor 	:		ID 
@@ -111,3 +111,25 @@ factor 	:		ID
 		|		ID '['NUMERIC_CONST']' 
 		;
  
+ %%
+
+	public Parser(LexerAnalyzer lexer) {
+        this.lexer = lexer;
+        //yydebug=true; // uncomment this line to show debug en console
+	}
+    private LexerAnalyzer lexer;
+
+    private int yylex() {
+        
+        Token token = this.lexer.getToken(); 
+        if (token != null) { 
+            this.yylval = new ParserVal(token.getLexeme());
+            return token.getID();
+        } 
+	return 0; 
+    } 
+    
+    private void yyerror(String stack_underflow_aborting) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("!!! Error: " +stack_underflow_aborting);
+    }

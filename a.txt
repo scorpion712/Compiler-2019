@@ -1,2 +1,0 @@
-int identifier;
-log b;

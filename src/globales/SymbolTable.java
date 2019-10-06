@@ -23,15 +23,16 @@ public final class SymbolTable {
     private static final int FOR_EACH = 265;
     private static final int IN = 266;
 
-    // Token constants that not have an ASCII representation
-    private static final int ID = 300;
-    private static final int STRING_CONST = 301;
-    private static final int GREATER_EQUAL = 302; // >= 
-    private static final int LESS_EQUAL = 303; // <=
-    private static final int EQUAL = 304;  // ==
-    private static final int DISTINCT = 305; // <>
-    private static final int ASSIGN = 306; // :=  
-    private static final int NUMERIC_CONST = 307; 
+    // Token constants that not have an ASCII representation 
+    // Note: they have to be mapped with Parser.
+    private static final int ID = 267;
+    private static final int STRING_CONST = 268;
+    private static final int GREATER_EQUAL = 269; // >= 
+    private static final int LESS_EQUAL = 270; // <=
+    private static final int EQUAL = 271;  // ==
+    private static final int DISTINCT = 272; // <>
+    private static final int ASSIGN = 273; // :=  
+    private static final int NUMERIC_CONST = 274; 
     
     // Usefull identifiers names
     private static final String GREATER_EQUAL_ID = ">="; 
@@ -65,7 +66,7 @@ public final class SymbolTable {
         identifiers.put("+", 43);
         identifiers.put(",", 44);
         identifiers.put("-", 45);
-        identifiers.put("/", 47);
+        identifiers.put("/", 47); 
         identifiers.put(";", 59);
         identifiers.put(LESS_THAN, 60);
         identifiers.put("=", 61);
@@ -79,7 +80,7 @@ public final class SymbolTable {
         identifiers.put("int", INT);    // numeric const
         identifiers.put("begin", BEGIN);
         identifiers.put("end", END);
-        identifiers.put("LONG", LONG);
+        identifiers.put("long", LONG);
         identifiers.put("for_each", FOR_EACH);
         identifiers.put("in", IN);
         identifiers.put("id", ID);
