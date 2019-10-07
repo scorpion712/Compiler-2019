@@ -10,6 +10,8 @@ public class LexerAnalyzer {
     static final int FINAL_STATE = 11;
     static final int INVALID_TOKEN = -1;
 
+    private int warning_counter;  
+    
     private ReaderBuffer fontCode;
     private final int[][] transitionMatrix = {
         /*E0*/{1, 2, 11, 11, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 11},
@@ -28,10 +30,11 @@ public class LexerAnalyzer {
 
     public LexerAnalyzer(StringBuffer pf) {
         this.fontCode = new ReaderBuffer(pf);
-        this.cargarAS();
+        this.loadSAMatrix();
+        warning_counter = 0;
     }
 
-    private void cargarAS() {
+    private void loadSAMatrix() {
         // Create semantic actions
         SemanticAction AS0 = new SAAddCharacter();
         SemanticAction AS1 = new SAGenerateID();
@@ -100,7 +103,7 @@ public class LexerAnalyzer {
         semanticActionMatrix[2][9] = AS2;
         semanticActionMatrix[2][10] = AS2;
         semanticActionMatrix[2][11] = AS2;
-        semanticActionMatrix[2][12] = AS2;
+        semanticActionMatrix[2][12] = AS2; 
         semanticActionMatrix[2][13] = AS2;
         semanticActionMatrix[2][14] = AS2;
 
@@ -281,38 +284,20 @@ public class LexerAnalyzer {
         return !fontCode.eof();
     }
 
-    public int getNroLinea() {
+    public int getLine() {
         return fontCode.getLine();
     }
 
     public int yylex() {
-        StringBuilder lexeme = new StringBuilder();
-        int currentState = INITIAL_STATE;
-        Token token = null;
-        while (currentState != FINAL_STATE) {
-            int currentCharacter = 0; // set null character
-            if (notEOF()) {
-                currentCharacter = fontCode.getCaracter(); // get the next character
-            }
-            // perform transition and execute the semantic action (if it has) 
-            SemanticAction as = semanticActionMatrix[currentState][getSymbol(currentCharacter)];
-            token = as.execute(fontCode, lexeme, (char) currentCharacter);
-            currentState = transitionMatrix[currentState][getSymbol(currentCharacter)];
-            if (currentState == INITIAL_STATE) { // find a comment
-                lexeme = new StringBuilder();   // to discard the comment the lexeme empties
-            }
-        }
-
-        if (token != null) { 
-            //Parser.yylval = new ParserVal(token.getLexeme());
-            //System.out.println("/// Linea " + fontCode.getLine() + ": (AL) " + token.toString() + "///");
+        Token token = getToken();  
+        if (token != null) {  
             return token.getID();
         }
-
+        System.out.println("analizadorLexico.LexerAnalyzer.yylex() SUMO 1");
+        warning_counter++; 
         return INVALID_TOKEN; // error
     }
 
-    // Used only to try the lexer
     public Token getToken() {
         StringBuilder lexeme = new StringBuilder();
 
@@ -331,8 +316,12 @@ public class LexerAnalyzer {
                 lexeme = new StringBuilder();   // to discard the comment the lexeme empties
             }
         } 
-
+        
         return token; // or error
     }
 
+    public int getWarning() {
+        return fontCode.getWarning();
+    }
+    
 }

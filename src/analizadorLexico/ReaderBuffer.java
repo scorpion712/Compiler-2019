@@ -4,12 +4,22 @@ public class ReaderBuffer {
 
     private StringBuffer buffer;
     private int line;
+    private int warning_counter;
 
     public ReaderBuffer(StringBuffer sb) {
         this.buffer = sb;
         this.line = 1;
+        this.warning_counter = 0;
     }
 
+    public int getWarning() {
+        return warning_counter;
+    }
+    
+    public void addWarning() {
+        warning_counter++; 
+    }
+    
     public boolean eof() { 
         return buffer.length() == 0;
     }

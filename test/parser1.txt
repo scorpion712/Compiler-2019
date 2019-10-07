@@ -1,0 +1,24 @@
+/+ Declarative statements +/
+int a;
+int a, b;
+long c;
+long d, e;
+int a [1];
+/+ with errors +/
+a;
+int ;
+INT b;
+int C;
+int a
+1; 
+int a b;
+int a,b
+long a,b; 
+int a 1];
+int a[1]
+int a [1;
+int [1];
+/+ The next three statements must print error...+/
+long a[1_] 
+int a[1] b[2];
+int a[1], b[2];

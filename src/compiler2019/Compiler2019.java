@@ -101,7 +101,7 @@ public class Compiler2019 {
     private static void lexer(StringBuffer sb) {
         LexerAnalyzer lexer = new LexerAnalyzer(sb);
         Token t;
-        System.out.println("*******************************************************");
+        System.out.println("*******************************************************\n*******************************************************"); 
         System.out.println("*********       ETAPA DE ANÁLISIS LÉXICO       ********");
         System.out.println("*******************************************************\n");
         System.out.println("______________________________________________________________");
@@ -110,6 +110,8 @@ public class Compiler2019 {
         while ((t = lexer.getToken()) != null) {
             System.out.println(t.toString());
         }
+        System.out.println("\n______________________________________________________________"
+                            + "Se detectaron " + lexer.getWarning() + " warnings léxicos.");
         System.out.println("\n______________________________________________________________");
         System.out.println("Tabla de Simbolos: \n______________________________________________________________\n"
                 + SymbolTable.getInstance().print());
@@ -119,16 +121,12 @@ public class Compiler2019 {
     }
 
     private static void parser(LexerAnalyzer lexer) { 
-        new Parser(lexer).run();
-        /*int yyparse = parser.yyparse();
-        switch(yyparse) {
-            case 1: 
-                System.out.println("Parse fails.");
-                break;
-            case 0:
-                System.out.println("Parse OK.");
-                break;
-        }*/
+        Parser parser = new Parser(lexer);
+        parser.run();
+        
+        System.out.println("\n______________________________________________________________\n"  
+                + "Se compilo con " + parser.getError() + " errores sintácticos y con " + lexer.getWarning() + " warnings léxicos.");
+        
         System.out.println("______________________________________________________________\n");
         SymbolTable.getInstance().print();
         System.out.println("______________________________________________________________");

@@ -27,7 +27,7 @@ public class SAGenerateConst implements SemanticAction {
         Token token; 
         if (constant >= -Math.pow(2, MAX_BITS_INT) && constant <= Math.pow(2, MAX_BITS_INT) - 1) { // it's an integer
             //token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), NUMERIC_CONST);
-            token = new Token(SymbolTable.getInstance().getID(INT), Long.toString(constant), NUMERIC_CONST);
+            token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), INT);
         } else {            //  it's a long
             if (constant < -Math.pow(2, MAX_BITS_ULONG)) {  // overflow
                 System.out.println("    Lexical Warning at line " + fc.getLine() + ": constant out of range. Min defined " + Math.pow(2, -MAX_BITS_ULONG) + ".");
@@ -39,7 +39,7 @@ public class SAGenerateConst implements SemanticAction {
                 }
             }
             //token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), LONG);
-            token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), NUMERIC_CONST); // 
+            token = new Token(SymbolTable.getInstance().getID(NUMERIC_CONST), Long.toString(constant), LONG); // 
         }
         SymbolTable.getInstance().addSymbol(token);
         return token;

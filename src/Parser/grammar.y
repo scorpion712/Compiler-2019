@@ -27,28 +27,33 @@ declarative_statements	:		variable_declaration_statement
 						|		colection_declaration_statement
 						;
 
-variable_declaration_statement	:		type var_list ';'	{System.out.println("variable declaration ok. Must print which variables were declared.");}   
-								|		type error ';' {System.out.println("Error. ID or ID list not declared.");}
-								|		error var_list {System.out.println("Error. Type is not defined.");}
+variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + lexer.getLine() + ".");}   
+								|		error var_list ';' {yyerror(ERROR_TYPE);}
+								|		type error ';' {yyerror(ERROR_IDENTIFIER);}   
+								|		type var_list ID {yyerror(ERROR_COMMA);}  
+								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
-colection_declaration_statement :		type ID '['initial_value_list']' ';'  
+colection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + lexer.getLine() + ".");} 
+								|		error ID '['index_list']' ';' {yyerror(ERROR_TYPE);}
+								|		type '['index_list']' ';' {yyerror(ERROR_IDENTIFIER);}
+								|		type ID '['index_list']' {yyerror(ERROR_SEMICOLON);}
+								|		type ID '['index_list';' {yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
+								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
+								|		type ID '['index_list']'',' {yyerror(ERROR_COLECTION);}
 								;
 
 var_list 	:		ID	 
-				|		error ';' {System.out.println("Error: Identifier not found.");}
-				|		var_list ',' ID  
+				|		var_list ',' ID     
 				;
 
-initial_value_list 	: 		 NUMERIC_CONST 	 
-					|		 index_list 
-					;
-
-index_list 	: 		index_list ',' index
+index_list 	: 		index
+			|		index_list ',' index 
+			|		index_list index {yyerror(ERROR_COMMA);}
 			; 
 
 index 	:		'_'
-			|		NUMERIC_CONST
+			|		NUMERIC_CONST  
 			;  
 			
 block_statements 	:		BEGIN statement_block	END
@@ -107,17 +112,44 @@ type	:		INT
 		;
 
 factor 	:		ID 
-		|		NUMERIC_CONST
-		|		ID '['NUMERIC_CONST']' 
+		|		NUMERIC_CONST 
+		|		'-' NUMERIC_CONST
 		;
  
  %%
 
+ 	// Constants declared to print error messages
+ 	private static final String ERROR_IDENTIFIER = ": identifier expected.";
+ 	private static final String ERROR_IDENTIFIER_LIST = ": identifier list expected.";
+ 	private static final String ERROR_INDEX = ": colection index expected.";
+ 	private static final String ERROR_TYPE = ": type expected.";
+ 	private static final String ERROR_SEMICOLON = ": ';' expected.";
+ 	private static final String ERROR_COMMA = ": ',' expected."; 
+ 	private static final String ERROR_SQUARE_BRACKET = " '['']' expected.";
+ 	private static final String ERROR_SQUARE_BRACKET_OPEN = " '[' expected.";
+ 	private static final String ERROR_SQUARE_BRACKET_CLOSE = " ']' expected.";
+ 	private static final String ERROR_BRACKET_OPEN = ": '(' expected.";
+ 	private static final String ERROR_BRACKET = ": ')' expected.";
+ 	private static final String ERROR_BEGIN = ": begin expected."; // before a executive statement
+ 	private static final String ERROR_END = ": end expected.";
+ 	private static final String ERROR_END_IF = ": end_if expected.";
+ 	private static final String ERROR_FOR = ": for expected.";
+ 	private static final String ERROR_IN = ": in expected.";
+ 	private static final String ERROR_OPERATOR = ": math operator expected.";
+ 	private static final String ERROR_SYMBOL = ": symbol expected.";
+ 	private static final String ERROR_COLECTION = ": error in colection declaration statement.";
+ 	private static final String ERROR_NUMERIC_CONST = ": numeric const or '_' expected.";
+
+ 	private int error_counter;
+
+    private LexerAnalyzer lexer;
+
+
 	public Parser(LexerAnalyzer lexer) {
         this.lexer = lexer;
+        error_counter = 0;
         //yydebug=true; // uncomment this line to show debug en console
 	}
-    private LexerAnalyzer lexer;
 
     private int yylex() {
         
@@ -129,7 +161,13 @@ factor 	:		ID
 	return 0; 
     } 
     
-    private void yyerror(String stack_underflow_aborting) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("!!! Error: " +stack_underflow_aborting);
+    private void yyerror(String parser_error) {
+    	if (!parser_error.equalsIgnoreCase("syntax error") ) { // ignore default parser error
+    		System.out.println("    Syntax error near line " + lexer.getLine() + parser_error);
+    		error_counter++;
+    	}
+    }
+
+    public int getError() {
+    	return error_counter;
     }
