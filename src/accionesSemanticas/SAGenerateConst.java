@@ -32,10 +32,12 @@ public class SAGenerateConst implements SemanticAction {
             if (constant < -Math.pow(2, MAX_BITS_ULONG)) {  // overflow
                 System.out.println("    Lexical Warning at line " + fc.getLine() + ": constant out of range. Min defined " + Math.pow(2, -MAX_BITS_ULONG) + ".");
                 constant = (long) -Math.pow(2, MAX_BITS_ULONG);
+                fc.addWarning();
             } else {
                 if (constant > Math.pow(2, MAX_BITS_ULONG) - 1) {
                     System.out.println("    Lexical Warning at line " + fc.getLine() + ": constant out of range. Max defined " + (Math.pow(2, MAX_BITS_ULONG) - 1) + ".");
                     constant = (long) Math.pow(2, MAX_BITS_ULONG) - 1;
+                    fc.addWarning();
                 }
             }
             //token = new Token(SymbolTable.getInstance().getID(LONG), Long.toString(constant), LONG);

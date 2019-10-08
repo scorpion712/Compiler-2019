@@ -14,7 +14,7 @@ public class LexerAnalyzer {
     
     private ReaderBuffer fontCode;
     private final int[][] transitionMatrix = {
-        /*E0*/{1, 2, 11, 11, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 11},
+        /*E0*/{1, 2, 11, 11, 3, 4, 5, 6, 7, 8, 0, 0, 11, 0, 11},
         /*E1*/ {1, 1, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 1, 11, 11},
         /*E2*/ {11, 2, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
         /*E3*/ {11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
@@ -49,9 +49,9 @@ public class LexerAnalyzer {
         SemanticAction AS10 = new SAGenerateNewLine();
         SemanticAction AS11 = new SACommentWarning();
         SemanticAction AS12 = new SAGenerateSimpleSymbol();
-        SemanticAction AS13 = new SASymbolWarning(); 
-
+        SemanticAction AS13 = new SASymbolWarning();
         SemanticAction AS14 = new SAStringWarning(); 
+        SemanticAction AS15 = new SAGenerateIndex();
         
         // Initialize semactic action matrix
         semanticActionMatrix = new SemanticAction[11][15];
@@ -69,7 +69,7 @@ public class LexerAnalyzer {
         semanticActionMatrix[0][9] = AS0;
         semanticActionMatrix[0][10] = new SANull();
         semanticActionMatrix[0][11] = AS10;
-        semanticActionMatrix[0][12] = AS13;
+        semanticActionMatrix[0][12] = AS15;
         semanticActionMatrix[0][13] = AS13;
         semanticActionMatrix[0][14] = new SANull(); // EOF
 

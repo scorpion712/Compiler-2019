@@ -15,6 +15,7 @@ public class SAGenerateID implements SemanticAction {
         if (lexeme.length() > MAX_LENGTH) {      // truncate and show warning
             lexeme = new StringBuilder(lexeme.substring(0, MAX_LENGTH));
             System.out.println("    Lexical Warning at line " + fc.getLine() + ": identifier exceeds " + MAX_LENGTH + " characters.");
+            fc.addWarning();
             // System.out.println("Linea " + fc.getNroLinea() + ": (AL) WARNING: Identificador truncado");
         }
         // Generate token and add it to symbol table

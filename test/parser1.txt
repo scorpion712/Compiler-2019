@@ -4,6 +4,8 @@ int a, b;
 long c;
 long d, e;
 int a [1];
+long b;
+long a,b;
 /+ with errors +/
 a;
 int ;
@@ -11,14 +13,16 @@ INT b;
 int C;
 int a
 1; 
+int 1;
+int c
 int a b;
 int a,b
-long a,b; 
 int a 1];
 int a[1]
 int a [1;
 int [1];
-/+ The next three statements must print error...+/
-long a[1_] 
+long a[1_];
 int a[1] b[2];
 int a[1], b[2];
+int a[bb];
+long b[1,_,2];

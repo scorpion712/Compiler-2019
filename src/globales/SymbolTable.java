@@ -73,6 +73,7 @@ public final class SymbolTable {
         identifiers.put(GREATER_THAN, 62);
         identifiers.put("[", 91); 
         identifiers.put("]", 93);
+        identifiers.put("_", 95);
         identifiers.put("if", IF);
         identifiers.put("else", ELSE);
         identifiers.put("end_if", END_IF);

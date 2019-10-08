@@ -30,17 +30,21 @@ declarative_statements	:		variable_declaration_statement
 variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + lexer.getLine() + ".");}   
 								|		error var_list ';' {yyerror(ERROR_TYPE);}
 								|		type error ';' {yyerror(ERROR_IDENTIFIER);}   
-								|		type var_list ID {yyerror(ERROR_COMMA);}  
+								|		type var_list ID  ';'{yyerror(ERROR_COMMA);}  
 								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
 colection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + lexer.getLine() + ".");} 
 								|		error ID '['index_list']' ';' {yyerror(ERROR_TYPE);}
-								|		type '['index_list']' ';' {yyerror(ERROR_IDENTIFIER);}
+								|		type error '['index_list']' ';' {yyerror(ERROR_IDENTIFIER);}
 								|		type ID '['index_list']' {yyerror(ERROR_SEMICOLON);}
+								|		type ID index_list {yyerror(ERROR_SQUARE_BRACKET);}
 								|		type ID '['index_list';' {yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
 								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
-								|		type ID '['index_list']'',' {yyerror(ERROR_COLECTION);}
+								|		type ID '['']' {yyerror(ERROR_INDEX);}
+								|		type ID '['error']' ';' {yyerror(ERROR_INDEX);}
+								|		type ID '['index_list index']'';' {yyerror(ERROR_COMMA);}
+								|		type ID '['index_list']' ',' error {yyerror(ERROR_COLECTION);}
 								;
 
 var_list 	:		ID	 
@@ -49,7 +53,6 @@ var_list 	:		ID
 
 index_list 	: 		index
 			|		index_list ',' index 
-			|		index_list index {yyerror(ERROR_COMMA);}
 			; 
 
 index 	:		'_'
@@ -119,8 +122,7 @@ factor 	:		ID
  %%
 
  	// Constants declared to print error messages
- 	private static final String ERROR_IDENTIFIER = ": identifier expected.";
- 	private static final String ERROR_IDENTIFIER_LIST = ": identifier list expected.";
+ 	private static final String ERROR_IDENTIFIER = ": identifier expected."; 
  	private static final String ERROR_INDEX = ": colection index expected.";
  	private static final String ERROR_TYPE = ": type expected.";
  	private static final String ERROR_SEMICOLON = ": ';' expected.";
@@ -137,8 +139,7 @@ factor 	:		ID
  	private static final String ERROR_IN = ": in expected.";
  	private static final String ERROR_OPERATOR = ": math operator expected.";
  	private static final String ERROR_SYMBOL = ": symbol expected.";
- 	private static final String ERROR_COLECTION = ": error in colection declaration statement.";
- 	private static final String ERROR_NUMERIC_CONST = ": numeric const or '_' expected.";
+ 	private static final String ERROR_COLECTION = ": error in colection declaration statement."; 
 
  	private int error_counter;
 
@@ -170,4 +171,9 @@ factor 	:		ID
 
     public int getError() {
     	return error_counter;
+    }
+
+    // Check if a constants is out of range
+    public void checkRange(String constant) {
+    	// TO DO
     }
