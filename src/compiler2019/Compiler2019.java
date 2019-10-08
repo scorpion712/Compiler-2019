@@ -1,11 +1,11 @@
 package compiler2019;
 
-import Parser.Parser;
+import parser.Parser;
 import java.io.FileInputStream;
 
-import analizadorLexico.LexerAnalyzer;
-import analizadorLexico.Token; 
-import globales.SymbolTable;
+import lexer.LexerAnalyzer;
+import lexer.Token; 
+import symbol_table.SymbolTable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;

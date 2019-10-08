@@ -1,4 +1,4 @@
-package analizadorLexico;
+package lexer;
 
 public class ReaderBuffer {
 

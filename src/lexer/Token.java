@@ -1,4 +1,4 @@
-package analizadorLexico;
+package lexer;
 
 import java.util.Hashtable;
 

@@ -1,15 +1,16 @@
-package accionesSemanticas;
+package semantic_actions;
 
-import analizadorLexico.ReaderBuffer;
-import analizadorLexico.Token;
-import globales.SymbolTable;
+import lexer.ReaderBuffer;
+import lexer.Token;
+import symbol_table.SymbolTable;
 
-public class SAGenerateDistinct implements SemanticAction {
-
+public class SAGenerateLessEqual implements SemanticAction  {
+    
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {
         lexeme.append(lastCharacter);
         return new Token(SymbolTable.getInstance().getID(lexeme.toString()), lexeme.toString(), "");
     }
 
+    
 }

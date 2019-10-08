@@ -1,9 +1,9 @@
-package globales;
+package symbol_table;
 
 import java.util.Hashtable;
 import java.util.Set;
 
-import analizadorLexico.Token;
+import lexer.Token;
 import java.util.Map;
 
 public final class SymbolTable {
@@ -20,7 +20,7 @@ public final class SymbolTable {
     private static final int BEGIN = 262;
     private static final int END = 263;
     private static final int LONG = 264;
-    private static final int FOR_EACH = 265;
+    private static final int FOREACH = 265;
     private static final int IN = 266;
 
     // Token constants that not have an ASCII representation 
@@ -82,7 +82,7 @@ public final class SymbolTable {
         identifiers.put("begin", BEGIN);
         identifiers.put("end", END);
         identifiers.put("long", LONG);
-        identifiers.put("for_each", FOR_EACH);
+        identifiers.put("foreach", FOREACH);
         identifiers.put("in", IN);
         identifiers.put("id", ID);
         identifiers.put("string", STRING_CONST);

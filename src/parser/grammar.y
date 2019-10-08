@@ -1,11 +1,11 @@
 %{
-	package Parser;
+	package parser;
 
-	import analizadorLexico.*;
-	import globales.*;
+	import lexer.*;
+	import symbol_table.*;
 %}
 
-%token IF ELSE END_IF PRINT INT BEGIN END LONG FOR_EACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN NUMERIC_CONST 
+%token IF ELSE END_IF PRINT INT BEGIN END LONG FOREACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN NUMERIC_CONST 
 
 
 %left '+' '-'
@@ -41,7 +41,7 @@ colection_declaration_statement :		type ID '['index_list']'';' {System.out.print
 								|		type ID index_list {yyerror(ERROR_SQUARE_BRACKET);}
 								|		type ID '['index_list';' {yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
 								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
-								|		type ID '['']' {yyerror(ERROR_INDEX);}
+								|		type ID '['']' ';' {yyerror(ERROR_INDEX);}
 								|		type ID '['error']' ';' {yyerror(ERROR_INDEX);}
 								|		type ID '['index_list index']'';' {yyerror(ERROR_COMMA);}
 								|		type ID '['index_list']' ',' error {yyerror(ERROR_COLECTION);}
@@ -59,7 +59,10 @@ index 	:		'_'
 			|		NUMERIC_CONST  
 			;  
 			
-block_statements 	:		BEGIN statement_block	END
+block_statements 	:		BEGIN statement_block END 
+					|		error statement_block END {yyerror(ERROR_BEGIN);}
+					|		BEGIN error END {yyerror(ERROR_EXE_STATEMENT);}
+					|		BEGIN statement_block error {yyerror(ERROR_END);}
 					;
 
 statement_block	:		executional_statements
@@ -68,28 +71,55 @@ statement_block	:		executional_statements
 
 executional_statements 	:		if_statement
 						|		assign_statement
-						|		for_each_in_statement
+						|		foreach_in_statement
 						|		print_statement
 						;
 
-if_statement 	:		IF '(' condition ')' executional_block END_IF
+if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.println("IF statement at line " + lexer.getLine() + ".");}
 				|		if_else_statement
+				|		IF condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN);}
+				|		IF '('condition executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE);}
+				|		IF condition executional_block END_IF {yyerror(ERROR_BRACKET);}
+				|		IF '('error')' executional_block END_IF {yyerror(ERROR_CONDITION);}
+				|		error '('condition')' executional_block END_IF {yyerror(ERROR_IF);}
+				|		IF '('condition')' error END_IF  {yyerror(ERROR_EXE_STATEMENT);}
+				|		IF '(' condition ')' executional_block error {yyerror(ERROR_END_IF);}  
 				;	
 
-if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF
+if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF {System.out.println("IF-ELSE statement at line " + lexer.getLine() + ".");}
+					|		IF '(' condition ')' executional_block ELSE error END_IF {yyerror(ERROR_EXE_STATEMENT);}
+					|		IF '('error')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION);}
+					|		IF '('condition')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT);}
+					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF);}
+				//		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_ELSE);}
 					;
 
 executional_block 	:		executional_statements
 					| 		block_statements
 					;
 
-assign_statement	:		ID ASSIGN expression ';'
+assign_statement	:		ID ASSIGN expression ';' {System.out.println("Assign statement at line " + lexer.getLine() + ".");}
+					|		error ASSIGN expression ';' {yyerror(ERROR_IDENTIFIER);}
+					|		ID error expression ';' {yyerror(ERROR_ASSIGN);}
+					|		ID ASSIGN error ';' {yyerror(ERROR_EXPRESSION);}
+					|		ID ASSIGN expression {yyerror(ERROR_SEMICOLON);}
 					;
 
-for_each_in_statement	:		FOR_EACH ID IN ID executional_block
+foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("FOREACH statement at line " + lexer.getLine() + ".");}
+						|		ID IN ID executional_block {yyerror(ERROR_FOR);}
+						|		FOREACH error IN ID executional_block {yyerror(ERROR_IDENTIFIER);}
+						|		FOREACH ID error ID executional_block {yyerror(ERROR_IN);}
+						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID);}
+					//	|		FOREACH ID IN ID {yerror(ERROR_EXE_STATEMENT);}		
 						;
 
-print_statement	:		PRINT '('STRING_CONST')' ';'
+print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print statement at line " + lexer.getLine() + ".");}
+				|		error '('STRING_CONST')' ';' {yyerror(ERROR_PRINT);}
+				|		PRINT STRING_CONST')' ';' {yyerror(ERROR_BRACKET_OPEN);}
+				|		PRINT '('STRING_CONST ';' {yyerror(ERROR_BRACKET_CLOSE);}
+				|		PRINT STRING_CONST ';' {yyerror(ERROR_BRACKET);}
+				|		PRINT '('')' ';' {yyerror(ERROR_STRING);}
+				|		PRINT '('STRING_CONST')' {yyerror(ERROR_SEMICOLON);}
 				;
 
 condition 	:		expression '<' expression	 
@@ -97,7 +127,7 @@ condition 	:		expression '<' expression
 			|		expression LESS_EQUAL expression 	 
 			| 		expression GREATER_EQUAL expression	 
 			| 		expression EQUAL expression			 
-			|		expression DISTINCT expression		 
+			|		expression DISTINCT expression	 
 			;
 
 expression	:		expression '+' term
@@ -123,6 +153,7 @@ factor 	:		ID
 
  	// Constants declared to print error messages
  	private static final String ERROR_IDENTIFIER = ": identifier expected."; 
+ 	private static final String ERROR_COLECTION_ID = ": colection identifier expected."; 
  	private static final String ERROR_INDEX = ": colection index expected.";
  	private static final String ERROR_TYPE = ": type expected.";
  	private static final String ERROR_SEMICOLON = ": ';' expected.";
@@ -131,15 +162,22 @@ factor 	:		ID
  	private static final String ERROR_SQUARE_BRACKET_OPEN = " '[' expected.";
  	private static final String ERROR_SQUARE_BRACKET_CLOSE = " ']' expected.";
  	private static final String ERROR_BRACKET_OPEN = ": '(' expected.";
- 	private static final String ERROR_BRACKET = ": ')' expected.";
- 	private static final String ERROR_BEGIN = ": begin expected."; // before a executive statement
+ 	private static final String ERROR_BRACKET_CLOSE = ": ')' expected.";
+ 	private static final String ERROR_BRACKET = ": '('')' expected.";
+ 	private static final String ERROR_BEGIN = ": begin expected."; 
  	private static final String ERROR_END = ": end expected.";
+ 	private static final String ERROR_IF = ": if expected.";
+ 	private static final String ERROR_ELSE = ": else expected.";
  	private static final String ERROR_END_IF = ": end_if expected.";
  	private static final String ERROR_FOR = ": for expected.";
  	private static final String ERROR_IN = ": in expected.";
- 	private static final String ERROR_OPERATOR = ": math operator expected.";
- 	private static final String ERROR_SYMBOL = ": symbol expected.";
  	private static final String ERROR_COLECTION = ": error in colection declaration statement."; 
+ 	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected."; 
+ 	private static final String ERROR_CONDITION = ": condition expected."; 
+ 	private static final String ERROR_PRINT = ": print expected."; 
+ 	private static final String ERROR_STRING = ": string expected."; 
+ 	private static final String ERROR_ASSIGN = ": ':=' expected."; 
+ 	private static final String ERROR_EXPRESSION = ": expression expected."; 
 
  	private int error_counter;
 
@@ -156,7 +194,7 @@ factor 	:		ID
         
         Token token = this.lexer.getToken(); 
         if (token != null) { 
-            this.yylval = new ParserVal(token.getLexeme());
+            this.yylval = new ParserVal(token.getLexeme()); 
             return token.getID();
         } 
 	return 0; 

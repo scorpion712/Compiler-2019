@@ -1,0 +1,42 @@
+begin 
+if (a > 3) a:= 0;   
+if (a > 3) 
+begin
+ a:= 0;
+ print(%strong%);
+ print(%fail%)
+end
+end_if 
+if (a > 3)
+begin
+ a:= 0; 
+end
+else
+ begin
+ foreach a in b[1] a:=a+1; /+ FOREACH quitar []+/ 
+ foreach a in a[2]
+    begin
+      a:= 11;
+      b:= a -1;  
+    end 
+ end 
+end_if 
+if (b > 3)
+begin
+ a:= 0; 
+ print(%fail2%)
+end
+else 
+ foreach a in b a:=a+1;
+ foreach x in a /+ END_IF EXPECTED ¿? +/
+    begin
+      a:= 11;
+      b:= a -1;
+    end 
+  end
+end_if /+ end expected... +/
+foreach c in colection
+ if (3*3 == 9) print(%ok%);
+ else a:=1;
+ end_if /+ no reconoce if ni foreach+/
+end 

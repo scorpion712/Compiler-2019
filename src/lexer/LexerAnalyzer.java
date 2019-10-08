@@ -1,7 +1,22 @@
-package analizadorLexico;   
-import Parser.Parser;
-import Parser.ParserVal;
-import accionesSemanticas.*;
+package lexer;   
+import semantic_actions.SAStringWarning;
+import semantic_actions.SASymbolWarning;
+import semantic_actions.SACommentWarning;
+import semantic_actions.SAGenerateIndex;
+import semantic_actions.SAAddCharacter;
+import semantic_actions.SAGenerateAssignment;
+import semantic_actions.SAGenerateLessEqual;
+import semantic_actions.SAGenerateGreaterEqual;
+import semantic_actions.SemanticAction;
+import semantic_actions.SAGenerateEqual;
+import semantic_actions.SAGenerateConst;
+import semantic_actions.SAGenerateID;
+import semantic_actions.SAGenerateOperator;
+import semantic_actions.SAGenerateSimpleSymbol;
+import semantic_actions.SAGenerateNewLine;
+import semantic_actions.SAGenerateString;
+import semantic_actions.SAGenerateDistinct;
+import semantic_actions.SANull; 
 
 public class LexerAnalyzer {
 

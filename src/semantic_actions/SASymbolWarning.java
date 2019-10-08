@@ -1,7 +1,7 @@
-package accionesSemanticas;
+package semantic_actions;
 
-import analizadorLexico.ReaderBuffer;
-import analizadorLexico.Token;
+import lexer.ReaderBuffer;
+import lexer.Token;
 
 public class SASymbolWarning implements SemanticAction{
 
