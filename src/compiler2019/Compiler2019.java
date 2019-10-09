@@ -110,7 +110,7 @@ public class Compiler2019 {
         while ((t = lexer.getToken()) != null) {
             System.out.println(t.toString());
         }
-        System.out.println("\n______________________________________________________________"
+        System.out.println("\n______________________________________________________________\n"
                             + "Se detectaron " + lexer.getWarning() + " warnings léxicos.");
         System.out.println("\n______________________________________________________________");
         System.out.println("Tabla de Simbolos: \n______________________________________________________________\n"

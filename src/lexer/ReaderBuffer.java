@@ -7,7 +7,7 @@ public class ReaderBuffer {
     private int warning_counter;
 
     public ReaderBuffer(StringBuffer sb) {
-        this.buffer = sb;
+        this.buffer = new StringBuffer(sb);
         this.line = 1;
         this.warning_counter = 0;
     }

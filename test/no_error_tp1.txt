@@ -1,0 +1,39 @@
+/+ Compilación sin errores +/
+int a, b;
+long c, d;
+int col1[1];
+long col2[1,_,3,_,_,5];
+/+ add support to declare more than 1 colection in 1 line +/
+int c1[2], c2[1,_], c3[4,1];
+begin
+	print(%starting executive statements%);
+	a := 10;
+	b:= a - 5;
+	c := 357984;
+	d := -12344 + 45 / 3 * 2;
+	if (a > b)
+		a := b-1;
+	else 
+		begin
+			c := c+1;
+			d := d*2;
+			b := col1[1] + col2[3] - 2;
+			foreach x in col1 
+				print(%x in col1%);
+			if (b <> a - 10) 
+				begin
+					foreach y in col2
+						begin
+							print(%for dentro%);
+							print(%de if%);
+							if (a == 0) 
+								print (%if dentro for%);
+							end_if
+						end
+					print(%fin for dentro if%);
+				end
+			end_if
+		end
+	end_if
+	print(%finishing executive statements%);
+end

@@ -14,7 +14,7 @@
 %%
 
 program	:		/* empty */ {System.out.println("EOF");}
-		|		statements  
+		|		statements
 		;
 
 statements	:		declarative_statements  
@@ -34,18 +34,21 @@ variable_declaration_statement	:		type var_list ';'	{System.out.println("Variabl
 								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
-colection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + lexer.getLine() + ".");} 
-								|		error ID '['index_list']' ';' {yyerror(ERROR_TYPE);}
-								|		type error '['index_list']' ';' {yyerror(ERROR_IDENTIFIER);}
-								|		type ID '['index_list']' {yyerror(ERROR_SEMICOLON);}
-								|		type ID index_list {yyerror(ERROR_SQUARE_BRACKET);}
-								|		type ID '['index_list';' {yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
-								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
-								|		type ID '['']' ';' {yyerror(ERROR_INDEX);}
-								|		type ID '['error']' ';' {yyerror(ERROR_INDEX);}
-								|		type ID '['index_list index']'';' {yyerror(ERROR_COMMA);}
-								|		type ID '['index_list']' ',' error {yyerror(ERROR_COLECTION);}
+colection_declaration_statement :		type colection_list ';' {System.out.println("Colection declared at line " + lexer.getLine() + ".");}
+								|		error colection_list ';' {yyerror(ERROR_TYPE);}
+								|		type ';' {yyerror(ERROR_COLECTION_ID);}
+								|		type colection_list ID ';' {yyerror(ERROR_COMMA);}
+								|		type colection_list  {yyerror(ERROR_SEMICOLON);}
 								;
+
+colection_list :		ID '['index_list']'
+				|		colection_list ',' ID '['index_list']'
+				|		error '['index_list']' {yyerror(ERROR_COLECTION_ID);} 
+				|		ID index_list error {yyerror(ERROR_SQUARE_BRACKET);}
+				|		ID '['index_list error{yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
+				|		ID index_list']' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
+				|		ID '['']'  {yyerror(ERROR_INDEX);}
+				;
 
 var_list 	:		ID	 
 				|		var_list ',' ID     
@@ -91,7 +94,6 @@ if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_bl
 					|		IF '('error')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION);}
 					|		IF '('condition')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT);}
 					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF);}
-				//		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_ELSE);}
 					;
 
 executional_block 	:		executional_statements
@@ -110,7 +112,7 @@ foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("
 						|		FOREACH error IN ID executional_block {yyerror(ERROR_IDENTIFIER);}
 						|		FOREACH ID error ID executional_block {yyerror(ERROR_IN);}
 						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID);}
-					//	|		FOREACH ID IN ID {yerror(ERROR_EXE_STATEMENT);}		
+						|		FOREACH ID IN ID '['{yyerror(ERROR_EXE_STATEMENT);}		
 						;
 
 print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print statement at line " + lexer.getLine() + ".");}
@@ -118,7 +120,7 @@ print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print state
 				|		PRINT STRING_CONST')' ';' {yyerror(ERROR_BRACKET_OPEN);}
 				|		PRINT '('STRING_CONST ';' {yyerror(ERROR_BRACKET_CLOSE);}
 				|		PRINT STRING_CONST ';' {yyerror(ERROR_BRACKET);}
-				|		PRINT '('')' ';' {yyerror(ERROR_STRING);}
+				|		PRINT '('error')' ';' {yyerror(ERROR_STRING);}
 				|		PRINT '('STRING_CONST')' {yyerror(ERROR_SEMICOLON);}
 				;
 
@@ -147,6 +149,7 @@ type	:		INT
 factor 	:		ID 
 		|		NUMERIC_CONST 
 		|		'-' NUMERIC_CONST
+		|		ID'['NUMERIC_CONST']'
 		;
  
  %%
@@ -166,13 +169,13 @@ factor 	:		ID
  	private static final String ERROR_BRACKET = ": '('')' expected.";
  	private static final String ERROR_BEGIN = ": begin expected."; 
  	private static final String ERROR_END = ": end expected.";
- 	private static final String ERROR_IF = ": if expected.";
- 	private static final String ERROR_ELSE = ": else expected.";
+ 	private static final String ERROR_IF = ": if expected."; 
  	private static final String ERROR_END_IF = ": end_if expected.";
  	private static final String ERROR_FOR = ": for expected.";
  	private static final String ERROR_IN = ": in expected.";
  	private static final String ERROR_COLECTION = ": error in colection declaration statement."; 
  	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected."; 
+ 	private static final String ERROR_STATEMENT = ": executional or declarative statement was expected."; 
  	private static final String ERROR_CONDITION = ": condition expected."; 
  	private static final String ERROR_PRINT = ": print expected."; 
  	private static final String ERROR_STRING = ": string expected."; 

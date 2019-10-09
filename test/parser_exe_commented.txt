@@ -1,0 +1,112 @@
+begin 
+ /+ without errors +/
+ a:= 32767; /+ suppose int a,b; long c,d; +/
+ b:= -32768;
+ c:= -2147483648;
+ d:= 2147483647; 
+ print(%string1%);
+ if (a > 3) a:= 0; end_if 
+ if (a > 3) 
+  begin
+   a:= 0;
+   print(%strong%);
+   print(%fail%) ;
+  end
+ end_if
+ print(%string2%);
+ print(%string3%);
+ foreach x in colection
+  a:= a+1;
+ foreach x in colection
+  begin
+   a:=a+1;
+   print(%a+1%);
+  end
+ if (b < 0) 
+  begin
+   foreach w in colection_B
+    if (w <> a*2)
+      begin 
+       print(%w%);
+       print(%<>%);
+      end
+    else
+       foreach j in Colecti_ON
+         j := Colecti_ON[1] / 2;
+    end_if
+   end
+ else
+   b := b+1;
+ end_if
+ /+ with errors +/ 
+/+ suppose int a,b; long c,d; +/
+ a:= 32768; /+ semantic error  +/
+ b:= -32768; /+ semantic error +/
+ c:= -2147483649;  /+ no error 'cause lexer "truncate" +/
+ d:= 2147483648;   /+ no error 'cause lexer "truncate" +/
+ print%string2%); /+ error '(' +/
+ print(%string3%; /+ ')' +/
+ print%string4%; /+ error '(' ')' +/
+ print(%string1%) /+ error ; +/
+ if (a > 3) a:= 0; end_if /+ if & assign +/
+ if (a >= b) a:=3; end_if /+ if & assign +/
+ if (a <= 3) a:= b; end_if /+ if & assign +/
+ if (a < b) a:=0; end_if /+ if & assign +/
+ if (a > 3+2) a:= 1; end_if /+ if & assign +/
+ if (3-2 <> 1*4+2-5) b:= 3+4/6; end_if /+ if & assign +/
+ if a > 3) a:= 0; end_if   /+ error '(' & assign +/
+ if ( > 3) a:= 0; end_if /+ error condition & assign +/
+ if (a 3) a:= 0; end_if /+ error condition & assign +/
+ if (a >  ) a:= 0; end_if /+ error condition & assign +/
+ if (a > 3 a:= 0; end_if /+ error ')' & assign +/
+ if (a > 3) end_if /+ error executional statement +/
+ if (a > 3); end_if /+ error executional statement +/
+ if (a > 3) a:= 0;  /+ assign +/
+ if (a > 3) /+ end_if +/
+  begin
+   a:= 0;
+   print(%strong%);
+   print(%fail%) /+ error ; +/
+  end
+ end_if
+ if (a > 3) a:= 0;   
+ if (a > 3) /+ error end_if +/
+ begin
+  a:= 0;
+  print(%strong%);
+  print(%fail%) /+ error; +/
+ end
+ end_if /+ if +/
+ if (a > 3)
+ begin
+  a:= 0; 
+ end
+ else
+  begin
+   foreach a in b[1] a:=a+1; /+ error foreach+/ 
+   foreach a in a[2]
+    begin
+      a:= 11;
+      b:= a -1;  
+    end /+ error foreach +/
+  end 
+ end_if /+ if-else +/ 
+ if (b > 3)
+ begin
+  a:= 0; 
+  print(%fail2%) /+ error ; +/
+ end
+ else 
+  foreach a in b a:=a+1;
+  foreach x in a /+ error end_if +/
+    begin
+      a:= 11;
+      b:= a -1;
+    end /+ foreach +/ 
+  end /+ close first begin +/
+ end_if /+ do not recognize if-else 'cause error end_if +/
+ foreach c in colection 
+  if (3*3 == 9) print(%ok%);
+  else a:=1;
+  end_if 
+end /+ error begin +/

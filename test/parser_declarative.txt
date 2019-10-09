@@ -6,6 +6,8 @@ long d, e;
 int a [1];
 long b;
 long a,b;
+long A,B;
+int THIS_is_A_IdentifieR_;
 /+ with errors +/
 a;
 int ;
@@ -13,6 +15,7 @@ INT b;
 int C;
 int a
 1; 
+int _a;
 int 1;
 int c
 int a b;

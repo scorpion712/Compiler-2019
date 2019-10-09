@@ -1,0 +1,95 @@
+begin
+ /+ without errors +/
+ print(%string1%);
+ if (a > 3) a:= 0; end_if 
+ if (a > 3) 
+  begin
+   a:= 0;
+   print(%strong%);
+   print(%fail%) ;
+  end
+ end_if
+ print(%string2%);
+ print(%string3%);
+ foreach x in colection
+  a:= a+1;
+ foreach x in colection
+  begin
+   a:=a+1;
+   print(%a+1%);
+  end
+ if (b < 0) 
+  begin
+   foreach w in colection_B
+    if (w <> a*2)
+      begin 
+       print(%w%);
+       print(%<>%);
+      end
+    else
+       foreach j in Colecti_ON
+         j := Colecti_ON[1] / 2;
+    end_if
+   end
+ else
+   b := b+1;
+ end_if
+ /+ with errors +/ 
+ print%string2%); 
+ print(%string3%;
+ print%string4%; 
+ print(%string1%) 
+ if (a >= b) a:=3; end_if 
+ if (a <= 3) a:= b; end_if 
+ if (a < b) a:=0; end_if 
+ if (a > 3+2) a:= 1; end_if 
+ if (3-2 <> 1*4+2-5) b:= 3+4/6; end_if 
+ if a > 3) a:= 0; end_if   
+ if ( > 3) a:= 0; end_if 
+ if (a 3) a:= 0; end_if 
+ if (a >  ) a:= 0; end_if 
+ if (a > 3 a:= 0; end_if 
+ if (a > 3) end_if 
+ if (a > 3); end_if 
+ if (a > 3) a:= 0;  
+ if (a > 3) a:= 0;   
+ if (a > 3) 
+ begin
+  a:= 0;
+  print(%strong%);
+  print(%fail%)
+ end
+ end_if
+ if (a > 3)
+ begin
+  a:= 0; 
+ end
+ else
+  begin
+   foreach a in b[1] a:=a+1; 
+   foreach a in a[2]
+    begin
+      a:= 11;
+      b:= a -1;  
+    end 
+  end 
+ end_if 
+ if (b > 3)
+ begin
+  a:= 0; 
+  print(%fail2%) 
+ end
+ else 
+  foreach a in b a:=a+1;
+  foreach x in a 
+    begin
+      a:= 11;
+      b:= a -1;
+    end 
+  end 
+ end_if 
+ foreach c in colection 
+  if (3*3 == 9) print(%ok%);
+  else a:=1;
+  end_if 
+end 
