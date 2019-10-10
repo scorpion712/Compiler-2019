@@ -25,8 +25,6 @@ public class LexerAnalyzer {
     static final int FINAL_STATE = 11;
     static final int INVALID_TOKEN = -1;
 
-    private int warning_counter;  
-    
     private ReaderBuffer fontCode;
     private final int[][] transitionMatrix = {
         /*E0*/{1, 2, 11, 11, 3, 4, 5, 6, 7, 8, 0, 0, 11, 0, 11},
@@ -46,7 +44,6 @@ public class LexerAnalyzer {
     public LexerAnalyzer(StringBuffer pf) {
         this.fontCode = new ReaderBuffer(pf);
         this.loadSAMatrix();
-        warning_counter = 0;
     }
 
     private void loadSAMatrix() {
@@ -307,9 +304,7 @@ public class LexerAnalyzer {
         Token token = getToken();  
         if (token != null) {  
             return token.getID();
-        }
-        System.out.println("analizadorLexico.LexerAnalyzer.yylex() SUMO 1");
-        warning_counter++; 
+        } 
         return INVALID_TOKEN; // error
     }
 

@@ -1,7 +1,7 @@
 max_integerConst = 32767
-min_integerConst = 0.00003051757
-max_LONG_Const = 0.00000000046566129
-min_LONG_Const = 2147483647
+min_integerConst = -32767 /+ lexer do not recognized as negative const +/
+max_LONG_Const = 2147483647
+min_LONG_Const = -2147483647 /+ lexer do not recognized as negative const +/
 LONG_Const_outofbound = 2147483648
 identifierWithMoreThan25Characters
 _invalidIdentifier

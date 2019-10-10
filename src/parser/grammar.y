@@ -27,28 +27,23 @@ declarative_statements	:		variable_declaration_statement
 						|		colection_declaration_statement
 						;
 
-variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + lexer.getLine() + ".");}   
+variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + $3.end_line + ".");}   
 								|		error var_list ';' {yyerror(ERROR_TYPE);}
 								|		type error ';' {yyerror(ERROR_IDENTIFIER);}   
 								|		type var_list ID  ';'{yyerror(ERROR_COMMA);}  
 								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
-colection_declaration_statement :		type colection_list ';' {System.out.println("Colection declared at line " + lexer.getLine() + ".");}
-								|		error colection_list ';' {yyerror(ERROR_TYPE);}
-								|		type ';' {yyerror(ERROR_COLECTION_ID);}
-								|		type colection_list ID ';' {yyerror(ERROR_COMMA);}
-								|		type colection_list  {yyerror(ERROR_SEMICOLON);}
-								;
-
-colection_list :		ID '['index_list']'
-				|		colection_list ',' ID '['index_list']'
-				|		error '['index_list']' {yyerror(ERROR_COLECTION_ID);} 
-				|		ID index_list error {yyerror(ERROR_SQUARE_BRACKET);}
-				|		ID '['index_list error{yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
-				|		ID index_list']' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
-				|		ID '['']'  {yyerror(ERROR_INDEX);}
-				;
+colection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + $6.end_line + ".");}
+								|		error ID '['index_list']'';' {yyerror(ERROR_TYPE);}
+								|		type error '['index_list']'';' {yyerror(ERROR_COLECTION_ID);}
+								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
+								|		type ID '['']'';' {yyerror(ERROR_INDEX);}
+								|		type ID '['error']'';' {yyerror(ERROR_INDEX);}
+								|		type ID '['index_list error ';' {yyerror(ERROR_SQUARE_BRACKET_CLOSE);}
+								|		type ID index_list ';' {yyerror(ERROR_SQUARE_BRACKET);}
+								|		type ID '['index_list']' error {yyerror(ERROR_SEMICOLON);}
+								; 
 
 var_list 	:		ID	 
 				|		var_list ',' ID     
@@ -74,26 +69,37 @@ statement_block	:		executional_statements
 
 executional_statements 	:		if_statement
 						|		assign_statement
-						|		foreach_in_statement
+						|		foreach_in_statement error {yyerror("Foreach error");}
 						|		print_statement
 						;
 
-if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.println("IF statement at line " + lexer.getLine() + ".");}
+if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.println("IF statement at line " + $1.end_line + ".");}
 				|		if_else_statement
-				|		IF condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN);}
-				|		IF '('condition executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE);}
-				|		IF condition executional_block END_IF {yyerror(ERROR_BRACKET);}
-				|		IF '('error')' executional_block END_IF {yyerror(ERROR_CONDITION);}
-				|		error '('condition')' executional_block END_IF {yyerror(ERROR_IF);}
-				|		IF '('condition')' error END_IF  {yyerror(ERROR_EXE_STATEMENT);}
-				|		IF '(' condition ')' executional_block error {yyerror(ERROR_END_IF);}  
+				|		IF error condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+				|		IF condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+				|		IF '('condition executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+				|		IF '('condition error executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+				|		IF condition executional_block END_IF {yyerror(ERROR_BRACKET, $2.begin_line);}
+				|		IF '('error')' executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
+				|		error '('condition')' executional_block END_IF {yyerror(ERROR_IF, $2.begin_line);}
+				|		IF '('condition')' error END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
+				|		IF '('condition')' END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}    
 				;	
 
-if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF {System.out.println("IF-ELSE statement at line " + lexer.getLine() + ".");}
-					|		IF '(' condition ')' executional_block ELSE error END_IF {yyerror(ERROR_EXE_STATEMENT);}
-					|		IF '('error')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION);}
-					|		IF '('condition')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT);}
-					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF);}
+if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF {System.out.println("IF-ELSE statement at line " + $1.end_line + ".");}
+					|		IF '('error')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
+					|		IF '('')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
+					|		IF condition ')' executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+					|		IF error condition ')' executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+					|		IF '(' condition executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+					|		IF '(' condition error executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+					|		IF '(' condition ')' ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
+					|		IF '(' condition ')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $4.begin_line);} 
+					|		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_BEGIN, $5.begin_line);} 
+					|		IF '(' condition ')' executional_block executional_block END_IF {yyerror(ERROR_ELSE, $6.begin_line);} 
+					|		IF '(' condition ')' executional_block ELSE error END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
+					|		IF '(' condition ')' executional_block ELSE  END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
+					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF, $7.begin_line);} 
 					;
 
 executional_block 	:		executional_statements
@@ -112,7 +118,7 @@ foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("
 						|		FOREACH error IN ID executional_block {yyerror(ERROR_IDENTIFIER);}
 						|		FOREACH ID error ID executional_block {yyerror(ERROR_IN);}
 						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID);}
-						|		FOREACH ID IN ID '['{yyerror(ERROR_EXE_STATEMENT);}		
+					//	|		FOREACH ID IN  {yyerror(ERROR_EXE_STATEMENT);}		
 						;
 
 print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print statement at line " + lexer.getLine() + ".");}
@@ -170,12 +176,12 @@ factor 	:		ID
  	private static final String ERROR_BEGIN = ": begin expected."; 
  	private static final String ERROR_END = ": end expected.";
  	private static final String ERROR_IF = ": if expected."; 
+ 	private static final String ERROR_ELSE = ": else expected."; 
  	private static final String ERROR_END_IF = ": end_if expected.";
  	private static final String ERROR_FOR = ": for expected.";
- 	private static final String ERROR_IN = ": in expected.";
- 	private static final String ERROR_COLECTION = ": error in colection declaration statement."; 
- 	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected."; 
- 	private static final String ERROR_STATEMENT = ": executional or declarative statement was expected."; 
+ 	private static final String ERROR_IN = ": in expected."; 
+ 	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected.";  
+ 	private static final String ERROR_EXE_BLOCK_STATEMENT = ": executional block statement was expected.";  
  	private static final String ERROR_CONDITION = ": condition expected."; 
  	private static final String ERROR_PRINT = ": print expected."; 
  	private static final String ERROR_STRING = ": string expected."; 
@@ -198,6 +204,8 @@ factor 	:		ID
         Token token = this.lexer.getToken(); 
         if (token != null) { 
             this.yylval = new ParserVal(token.getLexeme()); 
+            this.yylval.begin_line = lexer.getLine();
+            this.yylval.end_line = lexer.getLine();
             return token.getID();
         } 
 	return 0; 
@@ -206,6 +214,13 @@ factor 	:		ID
     private void yyerror(String parser_error) {
     	if (!parser_error.equalsIgnoreCase("syntax error") ) { // ignore default parser error
     		System.out.println("    Syntax error near line " + lexer.getLine() + parser_error);
+    		error_counter++;
+    	}
+    }
+
+    private void yyerror(String parser_error, int line) {
+    	if (!parser_error.equalsIgnoreCase("syntax error") ) { // ignore default parser error
+    		System.out.println("    Syntax error near line " + line + parser_error);
     		error_counter++;
     	}
     }

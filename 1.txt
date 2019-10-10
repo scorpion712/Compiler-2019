@@ -1,0 +1,6 @@
+begin
+	if (a<2)
+		print(%string%);  
+		print(%a%);
+	end_if
+end

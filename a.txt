@@ -1,0 +1,12 @@
+int a[-1]; /+ por definicion <tipo> <nombre_coleccion> [<tamaño>] siendo <tamño> una cte ENTERA +/
+int b[]; 
+begin
+	foreach a in col[1] /+ debe dar error, executional expected +/
+		print(%printing%); /+ print +/
+	foreach a in col
+		print(%printing2%); /+ print y for +/
+	foreach a in col(a) /+ error, executional expected +/
+		print(%printing3%);
+	foreach a in a+2 /+ ID expected +/
+		print(%print%);
+end

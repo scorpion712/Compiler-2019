@@ -8,7 +8,7 @@ public class SAGenerateID implements SemanticAction {
 
     private static final int MAX_LENGTH = 25;
     private static final String KEY_WORD = "Palabra reservada";
-    private static final String IDENTIFIER = "Identificador";
+    private static final String IDENTIFIER = "Identificador"; 
 
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {
         fc.returnCharacter(lastCharacter);  // discard the last character read

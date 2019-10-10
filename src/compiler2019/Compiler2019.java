@@ -75,7 +75,7 @@ public class Compiler2019 {
                         lexer(sb);
                         break;
                     case 2:
-                        parser(new LexerAnalyzer(sb));
+                        parser(sb);
                         break;
                     case 3:
                         break;
@@ -120,15 +120,15 @@ public class Compiler2019 {
         scan.nextLine();
     }
 
-    private static void parser(LexerAnalyzer lexer) { 
+    private static void parser(StringBuffer sb) { 
+        LexerAnalyzer lexer = new LexerAnalyzer(sb);
         Parser parser = new Parser(lexer);
         parser.run();
         
         System.out.println("\n______________________________________________________________\n"  
                 + "Se compilo con " + parser.getError() + " errores sintácticos y con " + lexer.getWarning() + " warnings léxicos.");
         
-        System.out.println("______________________________________________________________\n");
-        SymbolTable.getInstance().print();
+        System.out.println("______________________________________________________________\n"); 
         System.out.println("______________________________________________________________");
         Scanner scan = new Scanner(System.in);
         System.out.println("Presione enter para continuar."); 

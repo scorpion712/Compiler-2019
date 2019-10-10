@@ -6,7 +6,7 @@ import symbol_table.SymbolTable;
 
 public class SAGenerateIndex implements SemanticAction {
 
-    private final String INDEX = "indice";
+    private final String INDEX = "indice"; 
     
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {

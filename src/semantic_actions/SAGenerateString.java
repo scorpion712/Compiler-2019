@@ -12,7 +12,7 @@ import symbol_table.SymbolTable;
 public class SAGenerateString implements SemanticAction {
     
     // this constant may have the same string acording to STRING_CONST values in identifiers map from SymbolTable.class
-    private static final String STRING_CONST = "string";
+    private static final String STRING_CONST = "string"; 
     
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {  
         Token token = new Token(SymbolTable.getInstance().getID(STRING_CONST), lexeme.substring(1), STRING_CONST);

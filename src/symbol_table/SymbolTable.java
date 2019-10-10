@@ -122,13 +122,11 @@ public final class SymbolTable {
             Token t = getSymbol(s);
             out.append(t.toString() + "\n");
         }
-        /*
-        Show all the SymbolTable
+        //Show all the SymbolTable
         out.append("______________________________________________________________\nPalabras reservadas e identificadores:\n");
         for (String s: identifiers.keySet()) {
             out.append("identificador: " + s + " | id: " + identifiers.get(s) + "\n");
         }
-        */
         return out.toString();
     }
 
@@ -140,11 +138,11 @@ public final class SymbolTable {
         symbols.remove(lexema);
     }
 
-    public void modificarLexema(String viejo, String nuevo) {
-        Token t = getSymbol(viejo);
+    public void setLexeme(String old_lex, String new_lex) {
+        Token t = getSymbol(old_lex);
         if (t != null) {
-            t.setLexeme(nuevo);
-            remove(viejo);
+            t.setLexeme(new_lex);
+            remove(old_lex);
             addSymbol(t);
         }
     }

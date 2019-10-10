@@ -4,8 +4,7 @@ import lexer.ReaderBuffer;
 import lexer.Token;
 import symbol_table.SymbolTable;
 
-public class SAGenerateDistinct implements SemanticAction {
-
+public class SAGenerateDistinct implements SemanticAction { 
     @Override
     public Token execute(ReaderBuffer fc, StringBuilder lexeme, char lastCharacter) {
         lexeme.append(lastCharacter);
