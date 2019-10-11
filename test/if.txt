@@ -1,0 +1,100 @@
+begin
+	if (q < 0) 
+		print(%5%);
+	end_if
+	if (q ) 
+		print(%5%);
+	end_if
+	if () 
+		print(%5%);
+	end_if
+	if q < 0) 
+		print(%5%);
+	end_if
+	if (q < 0 
+		print(%5%);
+	end_if
+	if (q < 0) 
+		print(%5%); /+ no error end_if +/
+	if (q < 0) 
+		begin
+			print(%5%);
+		end
+	end_if
+	if q < 0) 
+		begin
+			print(%5%);
+		end
+	end_if
+	if () 
+		begin
+			print(%5%);
+		end
+	end_if
+	if (q ) 
+		begin
+			print(%5%);
+		end
+	end_if
+	if (q < 0 
+		begin
+			print(%5%);
+		end
+	end_if
+	if (q < 0) 
+		
+			print(%5%);
+		end
+	end_if
+	if (q < 0) 
+		begin
+			print(%5%);
+	end_if
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%col%);
+			foreach b in c2
+				begin
+					print(%&%);
+					print(%/%);
+				end
+		end
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%col%);
+			foreach b in c2
+				begin
+					print(%&%);
+					print(%/%);
+				end
+		end
+	end_if
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%col%);
+			foreach b in c2
+				
+					print(%&%);
+					print(%/%);
+				end
+		end
+	end_if
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%col%);
+			foreach b in c2
+				begin
+					print(%&%);
+					print(%/%);
+				
+		end
+	end_if
+end /+ no error end_if +/

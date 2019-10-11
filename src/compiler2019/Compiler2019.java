@@ -4,23 +4,23 @@ import parser.Parser;
 import java.io.FileInputStream;
 
 import lexer.LexerAnalyzer;
-import lexer.Token; 
+import lexer.Token;
 import symbol_table.SymbolTable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.Scanner; 
+import java.util.Scanner;
 
 public class Compiler2019 {
 
     public static void main(String[] args) {
-        printHeader(); 
+        printHeader();
         //loadFile(args[0]);
         loadFile("");
 
     }
 
-    private static void loadFile(String path) { 
+    private static void loadFile(String path) {
         if (path.equals("") || path.equals(null)) { // if there are not arguments, ask the user the file path
             Scanner scanner = new Scanner(System.in);
             System.out.println("Por favor, ingrese ruta de un archivo.");
@@ -41,7 +41,7 @@ public class Compiler2019 {
             System.err.println("Archivo no encontrado.");
             loadFile("");
         } catch (IOException ex) {
-            System.err.println("IOException. " + ex.getMessage()); 
+            System.err.println("IOException. " + ex.getMessage());
         }
     }
 
@@ -49,6 +49,7 @@ public class Compiler2019 {
         System.out.println("**************************************************************************");
         System.out.println("******      COMPILADOR PARA LA CÁTEDRA DISEÑO DE COMPILADORES       ******");
         System.out.println("******                ALUMNOS: Rojas - Lugo - Diez                  ******");
+        System.out.println("******                          GRUPO 18                            ******");
         System.out.println("******              AYUDANTE A CARGO: Dazeo, Nicolás                ******");
         System.out.println("******                          AÑO 2019                            ******");
         System.out.println("**************************************************************************");
@@ -101,37 +102,41 @@ public class Compiler2019 {
     private static void lexer(StringBuffer sb) {
         LexerAnalyzer lexer = new LexerAnalyzer(sb);
         Token t;
-        System.out.println("*******************************************************\n*******************************************************"); 
+        System.out.println("*******************************************************\n*******************************************************");
         System.out.println("*********       ETAPA DE ANÁLISIS LÉXICO       ********");
         System.out.println("*******************************************************\n");
         System.out.println("______________________________________________________________");
-        System.out.println("TOKENS RECONOCIDOS Y ERRORES:");
+        System.out.println("\tTOKENS RECONOCIDOS Y WARNINGS LEXICOS:");
         System.out.println("______________________________________________________________\n");
-        while ((t = lexer.getToken()) != null) {
-            System.out.println(t.toString());
+        while (lexer.notEOF()) {
+            if ((t = lexer.getToken()) != null) {
+                System.out.println(t.toString());
+            }
         }
         System.out.println("\n______________________________________________________________\n"
-                            + "Se detectaron " + lexer.getWarning() + " warnings léxicos.");
+                + "Se detectaron " + lexer.getWarning() + " warnings léxicos.");
         System.out.println("\n______________________________________________________________");
-        System.out.println("Tabla de Simbolos: \n______________________________________________________________\n"
+        System.out.println("\tTabla de Simbolos: \n______________________________________________________________\n"
                 + SymbolTable.getInstance().print());
         Scanner scan = new Scanner(System.in);
-        System.out.println("Presione enter para continuar."); 
+        System.out.println("Presione enter para continuar.");
         scan.nextLine();
     }
 
-    private static void parser(StringBuffer sb) { 
+    private static void parser(StringBuffer sb) {
         LexerAnalyzer lexer = new LexerAnalyzer(sb);
         Parser parser = new Parser(lexer);
         parser.run();
-        
-        System.out.println("\n______________________________________________________________\n"  
+
+        System.out.println("\n______________________________________________________________\n"
                 + "Se compilo con " + parser.getError() + " errores sintácticos y con " + lexer.getWarning() + " warnings léxicos.");
-        
-        System.out.println("______________________________________________________________\n"); 
+
+        System.out.println("______________________________________________________________\n");
+        /*System.out.println("\tTabla de Simbolos: \n______________________________________________________________\n"
+                + SymbolTable.getInstance().print());*/
         System.out.println("______________________________________________________________");
         Scanner scan = new Scanner(System.in);
-        System.out.println("Presione enter para continuar."); 
+        System.out.println("Presione enter para continuar.");
         scan.nextLine();
     }
 }

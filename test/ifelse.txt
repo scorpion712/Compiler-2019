@@ -1,0 +1,91 @@
+begin 
+	if (q < 0) 
+		print(%5%);
+	else 
+		print(%6%);
+	end_if
+	if q < 0) 
+		print(%5%);
+	else 
+		print(%6%);
+	end_if
+	if (q  0) 
+		print(%5%);
+	else 
+		print(%6%);
+	end_if
+	if (q < 0 
+		print(%5%);
+	else 
+		print(%6%);
+	end_if
+	if () 
+		print(%5%);
+	else 
+		print(%6%);
+	end_if
+	if (q < 0) 
+	else 
+		print(%6%);
+	end_if
+	if (q < 0) 
+		print(%5%);
+		print(%6%);
+	end_if
+	if (q < 0) 
+		print(%5%);
+	else 
+	end_if
+	if (q < 0) 
+		print(%5%);
+	else 
+		print(%6%);
+	if (q < 0) 
+		begin
+			print(%5%);
+		end
+	else 
+		print(%6%);
+	end_if
+	if (q < 0) 
+		print(%6%);
+	else 
+		begin
+			print(%5%);
+		end
+	end_if
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%a%);
+		end
+	else 
+		foreach a in c
+			print(%a%);
+	end_if
+	if (q < 0) 
+		print(%6%);
+	else 
+		begin
+			print(%5%);
+			foreach a in c
+				begin
+					print(%6%);
+					print(%7%);
+				end
+		end
+	end_if 
+	if (q < 0) 
+		print(%6%);
+	else 
+		begin
+			print(%5%);
+			foreach a in c
+				begin
+					print(%6%);
+					print(%7%);
+				end
+		end
+	end_if
+end 

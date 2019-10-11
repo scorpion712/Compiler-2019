@@ -1,0 +1,6 @@
+begin
+	foreach a in col
+		print(%t%); 
+	foreach a in col[1]
+		print(%t%); 
+end

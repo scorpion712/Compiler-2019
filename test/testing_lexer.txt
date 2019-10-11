@@ -3,7 +3,14 @@ min_integerConst = -32767 /+ lexer do not recognized as negative const +/
 max_LONG_Const = 2147483647
 min_LONG_Const = -2147483647 /+ lexer do not recognized as negative const +/
 LONG_Const_outofbound = 2147483648
+LONG_Const_outofbound = -2147483649 /+ lexer do not recognized as negative const +/
 identifierWithMoreThan25Characters
+another_ID
+INT a;
+IF a;
+iF
+elSe
+end_IF
 _invalidIdentifier
 validID < valid_ID
 validId > valid_1
@@ -16,7 +23,7 @@ max_integerConst <> min_LONG_Const
 int a, b = 25 / c
 print(a);
 %this is a string%
-%this also	is a string 234 & +-,;% 
+%this also	a is string 234 & +-,;% 
 %this is a bad string
 /+ multilene
 comment 

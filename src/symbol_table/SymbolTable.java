@@ -32,7 +32,8 @@ public final class SymbolTable {
     private static final int EQUAL = 271;  // ==
     private static final int DISTINCT = 272; // <>
     private static final int ASSIGN = 273; // :=  
-    private static final int NUMERIC_CONST = 274; 
+    private static final int INT_CONST = 274; 
+    private static final int LONG_CONST = 275;
     
     // Usefull identifiers names
     private static final String GREATER_EQUAL_ID = ">="; 
@@ -91,7 +92,8 @@ public final class SymbolTable {
         identifiers.put(EQUAL_ID, EQUAL);
         identifiers.put(DISTINCT_ID, DISTINCT);
         identifiers.put(ASSIGN_ID, ASSIGN);
-        identifiers.put("cte", NUMERIC_CONST);
+        identifiers.put("integer const", INT_CONST);
+        identifiers.put("long const", LONG_CONST);
     }
 
     public boolean containsID(String id) { 
@@ -123,7 +125,7 @@ public final class SymbolTable {
             out.append(t.toString() + "\n");
         }
         //Show all the SymbolTable
-        out.append("______________________________________________________________\nPalabras reservadas e identificadores:\n");
+        out.append("______________________________________________________________\n\tPalabras reservadas e identificadores:\n\n");
         for (String s: identifiers.keySet()) {
             out.append("identificador: " + s + " | id: " + identifiers.get(s) + "\n");
         }

@@ -5,7 +5,7 @@
 	import symbol_table.*;
 %}
 
-%token IF ELSE END_IF PRINT INT BEGIN END LONG FOREACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN NUMERIC_CONST 
+%token IF ELSE END_IF PRINT INT BEGIN END LONG FOREACH IN ID STRING_CONST GREATER_EQUAL LESS_EQUAL EQUAL DISTINCT ASSIGN INT_CONST LONG_CONST
 
 
 %left '+' '-'
@@ -54,13 +54,14 @@ index_list 	: 		index
 			; 
 
 index 	:		'_'
-			|		NUMERIC_CONST  
+			|		INT_CONST  
 			;  
 			
 block_statements 	:		BEGIN statement_block END 
 					|		error statement_block END {yyerror(ERROR_BEGIN);}
 					|		BEGIN error END {yyerror(ERROR_EXE_STATEMENT);}
-					|		BEGIN statement_block error {yyerror(ERROR_END);}
+					|		BEGIN statement_block error {yyerror(ERROR_END);} 
+					|		error statement_block error {yyerror(ERROR_BEGIN); yyerror(ERROR_END);}
 					;
 
 statement_block	:		executional_statements
@@ -69,9 +70,9 @@ statement_block	:		executional_statements
 
 executional_statements 	:		if_statement
 						|		assign_statement
-						|		foreach_in_statement error {yyerror("Foreach error");}
+						|		foreach_in_statement
 						|		print_statement
-						;
+						; 
 
 if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.println("IF statement at line " + $1.end_line + ".");}
 				|		if_else_statement
@@ -80,10 +81,13 @@ if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.print
 				|		IF '('condition executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
 				|		IF '('condition error executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
 				|		IF condition executional_block END_IF {yyerror(ERROR_BRACKET, $2.begin_line);}
-				|		IF '('error')' executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
+				|		IF '('error')' executional_block END_IF {yyerror(ERROR_CONDITION, $1.begin_line);}
+				|		IF '('')' executional_block END_IF {yyerror(ERROR_CONDITION, $1.begin_line);}
 				|		error '('condition')' executional_block END_IF {yyerror(ERROR_IF, $2.begin_line);}
 				|		IF '('condition')' error END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
 				|		IF '('condition')' END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}    
+			//	|		IF '('condition')' executional_block error  {yyerror(ERROR_END_IF, $5.begin_line);}    
+			//	|		IF '('condition')' executional_block {yyerror(ERROR_END_IF, $5.begin_line);}   
 				;	
 
 if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF {System.out.println("IF-ELSE statement at line " + $1.end_line + ".");}
@@ -95,30 +99,30 @@ if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_bl
 					|		IF '(' condition error executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
 					|		IF '(' condition ')' ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
 					|		IF '(' condition ')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $4.begin_line);} 
-					|		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_BEGIN, $5.begin_line);} 
-					|		IF '(' condition ')' executional_block executional_block END_IF {yyerror(ERROR_ELSE, $6.begin_line);} 
+					|		IF '(' condition ')' executional_block error END_IF {yyerror(ERROR_BEGIN, $4.begin_line);} 
+					|		IF '(' condition ')' executional_block executional_block END_IF {yyerror(ERROR_ELSE, $7.begin_line);} 
+					|		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_ELSE, $6.begin_line);} 
 					|		IF '(' condition ')' executional_block ELSE error END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
-					|		IF '(' condition ')' executional_block ELSE  END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
-					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF, $7.begin_line);} 
+					|		IF '(' condition ')' executional_block ELSE END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
+					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF, $6.begin_line);}
 					;
 
 executional_block 	:		executional_statements
 					| 		block_statements
 					;
 
-assign_statement	:		ID ASSIGN expression ';' {System.out.println("Assign statement at line " + lexer.getLine() + ".");}
+assign_statement	:		ID ASSIGN expression ';' {System.out.println("Assign statement at line " + $1.end_line + ".");}
 					|		error ASSIGN expression ';' {yyerror(ERROR_IDENTIFIER);}
 					|		ID error expression ';' {yyerror(ERROR_ASSIGN);}
 					|		ID ASSIGN error ';' {yyerror(ERROR_EXPRESSION);}
 					|		ID ASSIGN expression {yyerror(ERROR_SEMICOLON);}
 					;
 
-foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("FOREACH statement at line " + lexer.getLine() + ".");}
-						|		ID IN ID executional_block {yyerror(ERROR_FOR);}
-						|		FOREACH error IN ID executional_block {yyerror(ERROR_IDENTIFIER);}
-						|		FOREACH ID error ID executional_block {yyerror(ERROR_IN);}
-						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID);}
-					//	|		FOREACH ID IN  {yyerror(ERROR_EXE_STATEMENT);}		
+foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("FOREACH statement at line " + $1.end_line  + ".");} 
+						|		ID IN ID executional_block {yyerror(ERROR_FOR, $1.begin_line);}
+						|		ID error IN ID executional_block {yyerror(ERROR_FOR, $1.begin_line);}
+						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID, $2.begin_line);}
+					//	|		FOREACH ID IN executional_block {yyerror(ERROR_COLECTION_ID, $2.begin_line);}
 						;
 
 print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print statement at line " + lexer.getLine() + ".");}
@@ -126,7 +130,7 @@ print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print state
 				|		PRINT STRING_CONST')' ';' {yyerror(ERROR_BRACKET_OPEN);}
 				|		PRINT '('STRING_CONST ';' {yyerror(ERROR_BRACKET_CLOSE);}
 				|		PRINT STRING_CONST ';' {yyerror(ERROR_BRACKET);}
-				|		PRINT '('error')' ';' {yyerror(ERROR_STRING);}
+				|		PRINT '('')' ';' {yyerror(ERROR_STRING);}
 				|		PRINT '('STRING_CONST')' {yyerror(ERROR_SEMICOLON);}
 				;
 
@@ -153,9 +157,12 @@ type	:		INT
 		;
 
 factor 	:		ID 
-		|		NUMERIC_CONST 
-		|		'-' NUMERIC_CONST
-		|		ID'['NUMERIC_CONST']'
+		|		INT_CONST {checkRange($$.sval, MAX_BITS_INT);}
+		|		LONG_CONST {checkRange($$.sval, MAX_BITS_LONG);}
+		|		'-' INT_CONST {checkRange("-"+$2.sval, MAX_BITS_INT); }
+		|		'-' LONG_CONST {checkRange("-"+$2.sval, MAX_BITS_LONG);}
+		|		ID'['INT_CONST']' {checkRange($3.sval, MAX_BITS_INT);}
+		|		ID'[''-'INT_CONST']' {checkRange($3.sval, MAX_BITS_INT);}
 		;
  
  %%
@@ -178,7 +185,7 @@ factor 	:		ID
  	private static final String ERROR_IF = ": if expected."; 
  	private static final String ERROR_ELSE = ": else expected."; 
  	private static final String ERROR_END_IF = ": end_if expected.";
- 	private static final String ERROR_FOR = ": for expected.";
+ 	private static final String ERROR_FOR = ": foreach expected.";
  	private static final String ERROR_IN = ": in expected."; 
  	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected.";  
  	private static final String ERROR_EXE_BLOCK_STATEMENT = ": executional block statement was expected.";  
@@ -187,11 +194,16 @@ factor 	:		ID
  	private static final String ERROR_STRING = ": string expected."; 
  	private static final String ERROR_ASSIGN = ": ':=' expected."; 
  	private static final String ERROR_EXPRESSION = ": expression expected."; 
+ 	private static final String ERROR_CONST = ": constant out of range.";
 
  	private int error_counter;
 
     private LexerAnalyzer lexer;
 
+
+    // constants to define the numbers of bits to represent an integer const or a ulong const
+    private static final int MAX_BITS_INT = 15;
+    private static final int MAX_BITS_LONG = 31;
 
 	public Parser(LexerAnalyzer lexer) {
         this.lexer = lexer;
@@ -230,6 +242,14 @@ factor 	:		ID
     }
 
     // Check if a constants is out of range
-    public void checkRange(String constant) {
-    	// TO DO
+    public void checkRange(String myConst, int rangeBits) { 
+        long constant = Long.parseLong(myConst); 
+        if (constant < -Math.pow(2, rangeBits) || constant > Math.pow(2, rangeBits) - 1) {
+            yyerror(ERROR_CONST, lexer.getLine());
+        }
+        if (constant < 0) {  
+            Token t = SymbolTable.getInstance().getSymbol(myConst.substring(1));
+            SymbolTable.getInstance().remove(myConst.substring(1));
+            SymbolTable.getInstance().addSymbol(new Token(t.getID(), myConst, "negative " + t.getDescription()));
+        }
     }

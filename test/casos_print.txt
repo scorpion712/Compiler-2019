@@ -1,0 +1,9 @@
+begin
+	print(%anda%);
+	(%print%);
+	print% ( %);
+	print(% ) %;
+	print(% ; %)
+	print(asd%);	
+	print(%asd);
+end

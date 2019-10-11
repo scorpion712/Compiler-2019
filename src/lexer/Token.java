@@ -11,8 +11,7 @@ public class Token {
     public Token(int id, String lexeme, String description) {
         this.id = id;
         this.lexeme = lexeme;
-        this.description = description;
-        this.type = "sin definir";
+        this.description = description; 
     }
 
     public void addAttribute(String caract, Object val) {
@@ -39,22 +38,7 @@ public class Token {
         return description;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
- 
-
     public String toString() {
-        return "Token: " + id + " | Lexeme: " + lexeme + " | " + "Description: " + description + " | Type: " + type;
-        /*
-        if (description == null) {
-            return lexeme;
-        }
-        return description + " " + lexeme;
-         */
+        return "Token: " + id + " | Lexeme: " + lexeme + " | " + "Description: " + description ;
     }
 }
