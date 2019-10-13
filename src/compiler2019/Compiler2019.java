@@ -132,8 +132,8 @@ public class Compiler2019 {
                 + "Se compilo con " + parser.getError() + " errores sintácticos y con " + lexer.getWarning() + " warnings léxicos.");
 
         System.out.println("______________________________________________________________\n");
-        /*System.out.println("\tTabla de Simbolos: \n______________________________________________________________\n"
-                + SymbolTable.getInstance().print());*/
+        System.out.println("\tTabla de Simbolos: \n______________________________________________________________\n"
+                + SymbolTable.getInstance().print());
         System.out.println("______________________________________________________________");
         Scanner scan = new Scanner(System.in);
         System.out.println("Presione enter para continuar.");

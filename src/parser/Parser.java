@@ -627,15 +627,16 @@ final static String yyrule[] = {
 	}
 
     private int yylex() {
-        
-        Token token = this.lexer.getToken(); 
-        if (token != null) { 
-            this.yylval = new ParserVal(token.getLexeme()); 
-            this.yylval.begin_line = lexer.getLine();
-            this.yylval.end_line = lexer.getLine();
-            return token.getID();
-        } 
-	return 0; 
+        while (lexer.notEOF()) {
+            Token token = this.lexer.getToken();
+            if (token != null) {
+                this.yylval = new ParserVal(token.getLexeme());
+                this.yylval.begin_line = lexer.getLine();
+                this.yylval.end_line = lexer.getLine();
+                return token.getID();
+            }
+        }
+        return 0;
     } 
     
     private void yyerror(String parser_error) {
@@ -668,7 +669,7 @@ final static String yyrule[] = {
             SymbolTable.getInstance().addSymbol(new Token(t.getID(), myConst, "negative " + t.getDescription()));
         }
     }
-//#line 600 "Parser.java"
+//#line 601 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1124,11 +1125,11 @@ case 114:
 break;
 case 115:
 //#line 174 "grammar.y"
-{checkRange("-"+val_peek(0).sval, MAX_BITS_INT); }
+{checkRange(val_peek(0).sval, MAX_BITS_INT); }
 break;
 case 116:
 //#line 175 "grammar.y"
-{checkRange("-"+val_peek(0).sval, MAX_BITS_LONG);}
+{checkRange(val_peek(0).sval, MAX_BITS_LONG);}
 break;
 case 117:
 //#line 176 "grammar.y"
@@ -1136,9 +1137,9 @@ case 117:
 break;
 case 118:
 //#line 177 "grammar.y"
-{checkRange(val_peek(2).sval, MAX_BITS_INT);}
+{checkRange(val_peek(1).sval, MAX_BITS_INT);}
 break;
-//#line 1065 "Parser.java"
+//#line 1066 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

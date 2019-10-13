@@ -171,10 +171,10 @@ type	:		INT
 factor 	:		ID 
 		|		INT_CONST {checkRange($$.sval, MAX_BITS_INT);}
 		|		LONG_CONST {checkRange($$.sval, MAX_BITS_LONG);}
-		|		'-' INT_CONST {checkRange("-"+$2.sval, MAX_BITS_INT); }
-		|		'-' LONG_CONST {checkRange("-"+$2.sval, MAX_BITS_LONG);}
+		|		'-' INT_CONST {checkRange($2.sval, MAX_BITS_INT); }
+		|		'-' LONG_CONST {checkRange($2.sval, MAX_BITS_LONG);}
 		|		ID'['INT_CONST']' {checkRange($3.sval, MAX_BITS_INT);}
-		|		ID'[''-'INT_CONST']' {checkRange($3.sval, MAX_BITS_INT);}
+		|		ID'[''-'INT_CONST']' {checkRange($4.sval, MAX_BITS_INT);}
 		;
  
  %%
@@ -223,15 +223,16 @@ factor 	:		ID
 	}
 
     private int yylex() {
-        
-        Token token = this.lexer.getToken(); 
-        if (token != null) { 
-            this.yylval = new ParserVal(token.getLexeme()); 
-            this.yylval.begin_line = lexer.getLine();
-            this.yylval.end_line = lexer.getLine();
-            return token.getID();
-        } 
-	return 0; 
+        while (lexer.notEOF()) {
+            Token token = this.lexer.getToken();
+            if (token != null) {
+                this.yylval = new ParserVal(token.getLexeme());
+                this.yylval.begin_line = lexer.getLine();
+                this.yylval.end_line = lexer.getLine();
+                return token.getID();
+            }
+        }
+        return 0;
     } 
     
     private void yyerror(String parser_error) {
