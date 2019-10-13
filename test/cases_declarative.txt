@@ -8,11 +8,11 @@ long b;
 long a,b;
 long A,B;
 int THIS_is_A_IdentifieR_;
+int C_a;
 /+ with errors +/
 a;
 int ;
 INT b;
-int C;
 int a
 1; 
 int _a;

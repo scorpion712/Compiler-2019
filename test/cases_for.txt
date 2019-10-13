@@ -1,0 +1,26 @@
+begin
+	foreach a in col
+		print(%5%);
+	foreach a in col
+		begin
+			print(%4%);
+		end;
+	for a in col
+		print(%1%);
+	foreach a in col
+		begin
+			print(%1%);
+			if (A == 3)
+				print(%2%);
+			else
+				print(%-2%);
+			end_if;
+			print(%3%);
+		end;
+	foreach in col
+		print(%5%);
+	foreach a col
+		print(%5%);
+	foreach a in
+		print(%5%);
+end;

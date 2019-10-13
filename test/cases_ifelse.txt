@@ -3,39 +3,39 @@ begin
 		print(%5%);
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if q < 0) 
 		print(%5%);
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if (q  0) 
 		print(%5%);
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if (q < 0 
 		print(%5%);
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if () 
 		print(%5%);
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if (q < 0) 
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if (q < 0) 
 		print(%5%);
 		print(%6%);
-	end_if
+	end_if;
 	if (q < 0) 
 		print(%5%);
 	else 
-	end_if
+	end_if;
 	if (q < 0) 
 		print(%5%);
 	else 
@@ -43,27 +43,27 @@ begin
 	if (q < 0) 
 		begin
 			print(%5%);
-		end
+		end;
 	else 
 		print(%6%);
-	end_if
+	end_if;
 	if (q < 0) 
 		print(%6%);
 	else 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if (q < 0) 
 		begin
 			print(%5%);
 			foreach a in c
 				print(%a%);
-		end
+		end;
 	else 
 		foreach a in c
 			print(%a%);
-	end_if
+	end_if;
 	if (q < 0) 
 		print(%6%);
 	else 
@@ -73,9 +73,9 @@ begin
 				begin
 					print(%6%);
 					print(%7%);
-				end
-		end
-	end_if 
+				end;
+		end;
+	end_if ;
 	if (q < 0) 
 		print(%6%);
 	else 
@@ -85,7 +85,7 @@ begin
 				begin
 					print(%6%);
 					print(%7%);
-				end
-		end
-	end_if
-end 
+				end;
+		end;
+	end_if;
+end ;

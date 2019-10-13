@@ -3,8 +3,6 @@ int a, b;
 long c, d;
 int col1[1];
 long col2[1,_,3,_,_,5];
-/+ add support to declare more than 1 colection in 1 line +/
-int c1[2], c2[1,_], c3[4,1];
 begin
 	print(%starting executive statements%);
 	a := 10;
@@ -28,12 +26,12 @@ begin
 							print(%de if%);
 							if (a == 0) 
 								print (%if dentro for%);
-							end_if
-						end
+							end_if;
+						end;
 					print(%fin for dentro if%);
-				end
-			end_if
-		end
-	end_if
+				end;
+			end_if;
+		end;
+	end_if;
 	print(%finishing executive statements%);
-end
+end;

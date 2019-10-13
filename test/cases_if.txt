@@ -1,66 +1,55 @@
 begin
 	if (q < 0) 
 		print(%5%);
-	end_if
+	end_if;
 	if (q ) 
 		print(%5%);
-	end_if
+	end_if;
 	if () 
 		print(%5%);
-	end_if
+	end_if;
 	if q < 0) 
 		print(%5%);
-	end_if
+	end_if;
 	if (q < 0 
 		print(%5%);
-	end_if
+	end_if;
 	if (q < 0) 
-		print(%5%); /+ no error end_if +/
+		print(%5%);
 	if (q < 0) 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if q < 0) 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if () 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if (q ) 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if (q < 0 
 		begin
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if (q < 0) 
 		
 			print(%5%);
-		end
-	end_if
+		end;
+	end_if;
 	if (q < 0) 
 		begin
 			print(%5%);
-	end_if
-	if (q < 0) 
-		begin
-			print(%5%);
-			foreach a in c
-				print(%col%);
-			foreach b in c2
-				begin
-					print(%&%);
-					print(%/%);
-				end
-		end
+	end_if;
 	if (q < 0) 
 		begin
 			print(%5%);
@@ -70,9 +59,20 @@ begin
 				begin
 					print(%&%);
 					print(%/%);
-				end
-		end
-	end_if
+				end;
+		end;
+	if (q < 0) 
+		begin
+			print(%5%);
+			foreach a in c
+				print(%col%);
+			foreach b in c2
+				begin
+					print(%&%);
+					print(%/%);
+				end;
+		end;
+	end_if;
 	if (q < 0) 
 		begin
 			print(%5%);
@@ -82,9 +82,9 @@ begin
 				
 					print(%&%);
 					print(%/%);
-				end
-		end
-	end_if
+				end;
+		end;
+	end_if;
 	if (q < 0) 
 		begin
 			print(%5%);
@@ -95,6 +95,6 @@ begin
 					print(%&%);
 					print(%/%);
 				
-		end
-	end_if
-end /+ no error end_if +/
+		end;
+	end_if;
+end ;

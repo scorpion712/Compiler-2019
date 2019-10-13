@@ -14,13 +14,20 @@
 %%
 
 program	:		/* empty */ {System.out.println("EOF");}
-		|		statements
+		|		program_statements
 		;
 
-statements	:		declarative_statements  
-			|		block_statements
+program_statements :		statements
+		|		statements block_statements ';'
+		|		statements block_statements error {yyerror(ERROR_SEMICOLON);}
+		|		statements block_statements {yyerror(ERROR_SEMICOLON);}
+		|		block_statements ';'
+		|		block_statements {yyerror(ERROR_SEMICOLON);}
+		|		block_statements error {yyerror(ERROR_SEMICOLON);}
+		;
+
+statements	:		declarative_statements
 			|		statements 	declarative_statements
-			|		statements 	block_statements
 			;
 
 declarative_statements	:		variable_declaration_statement  
@@ -29,8 +36,7 @@ declarative_statements	:		variable_declaration_statement
 
 variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + $3.end_line + ".");}   
 								|		error var_list ';' {yyerror(ERROR_TYPE);}
-								|		type error ';' {yyerror(ERROR_IDENTIFIER);}   
-								|		type var_list ID  ';'{yyerror(ERROR_COMMA);}  
+								|		type error ';' {yyerror(ERROR_IDENTIFIER);}    
 								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
@@ -47,10 +53,13 @@ colection_declaration_statement :		type ID '['index_list']'';' {System.out.print
 
 var_list 	:		ID	 
 				|		var_list ',' ID     
+				|		var_list ID {yyerror(ERROR_COMMA, $1.begin_line);}
+				|		',' ID {yyerror(ERROR_IDENTIFIER, $1.begin_line);}
 				;
 
 index_list 	: 		index
 			|		index_list ',' index 
+			|		index_list index {yyerror(ERROR_COMMA, $1.begin_line);}
 			; 
 
 index 	:		'_'
@@ -62,6 +71,7 @@ block_statements 	:		BEGIN statement_block END
 					|		BEGIN error END {yyerror(ERROR_EXE_STATEMENT);}
 					|		BEGIN statement_block error {yyerror(ERROR_END);} 
 					|		error statement_block error {yyerror(ERROR_BEGIN); yyerror(ERROR_END);}
+					|		error END {yyerror(ERROR_BEGIN, $1.end_line);}
 					;
 
 statement_block	:		executional_statements
@@ -74,8 +84,8 @@ executional_statements 	:		if_statement
 						|		print_statement
 						; 
 
-if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.println("IF statement at line " + $1.end_line + ".");}
-				|		if_else_statement
+if_statement 	:		IF '(' condition ')' executional_block END_IF ';' {System.out.println("IF statement at line " + $1.end_line + ".");}
+				|		IF '(' condition ')' executional_block else_statement END_IF ';' {System.out.println("IF-ELSE statement at line " + $1.end_line + ".");}
 				|		IF error condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
 				|		IF condition ')' executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
 				|		IF '('condition executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
@@ -86,29 +96,30 @@ if_statement 	:		IF '(' condition ')' executional_block END_IF {System.out.print
 				|		error '('condition')' executional_block END_IF {yyerror(ERROR_IF, $2.begin_line);}
 				|		IF '('condition')' error END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
 				|		IF '('condition')' END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}    
-			//	|		IF '('condition')' executional_block error  {yyerror(ERROR_END_IF, $5.begin_line);}    
-			//	|		IF '('condition')' executional_block {yyerror(ERROR_END_IF, $5.begin_line);}   
+				|		IF error condition ')' executional_block else_statement END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+				|		IF condition ')' executional_block else_statement END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
+				|		IF '('condition executional_block else_statement END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+				|		IF '('condition error executional_block else_statement END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
+				|		IF condition executional_block else_statement END_IF {yyerror(ERROR_BRACKET, $2.begin_line);}
+				|		IF '('error')' executional_block else_statement END_IF {yyerror(ERROR_CONDITION, $1.begin_line);}
+				|		IF '('')' executional_block else_statement END_IF {yyerror(ERROR_CONDITION, $1.begin_line);}
+				|		error '('condition')' executional_block else_statement END_IF {yyerror(ERROR_IF, $2.begin_line);}
+				|		IF '('condition')' error else_statement END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
+				|		IF '('condition')' else_statement END_IF  {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}   
+				|		IF '('condition')' executional_block error {yyerror(ERROR_END_IF, $4.begin_line);}
+				|		IF '(' condition ')' executional_block END_IF error {yyerror(ERROR_SEMICOLON);}
+				|		IF '(' condition ')' executional_block else_statement END_IF error {yyerror(ERROR_SEMICOLON);}
 				;	
 
-if_else_statement	: 		IF '(' condition ')' executional_block ELSE executional_block END_IF {System.out.println("IF-ELSE statement at line " + $1.end_line + ".");}
-					|		IF '('error')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
-					|		IF '('')' executional_block ELSE executional_block END_IF {yyerror(ERROR_CONDITION, $2.begin_line);}
-					|		IF condition ')' executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
-					|		IF error condition ')' executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_OPEN, $3.begin_line);}
-					|		IF '(' condition executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
-					|		IF '(' condition error executional_block ELSE executional_block END_IF {yyerror(ERROR_BRACKET_CLOSE, $2.begin_line);}
-					|		IF '(' condition ')' ELSE executional_block END_IF {yyerror(ERROR_EXE_STATEMENT, $4.begin_line);}
-					|		IF '(' condition ')' error ELSE executional_block END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $4.begin_line);} 
-					|		IF '(' condition ')' executional_block error END_IF {yyerror(ERROR_BEGIN, $4.begin_line);} 
-					|		IF '(' condition ')' executional_block executional_block END_IF {yyerror(ERROR_ELSE, $7.begin_line);} 
-					|		IF '(' condition ')' executional_block error executional_block END_IF {yyerror(ERROR_ELSE, $6.begin_line);} 
-					|		IF '(' condition ')' executional_block ELSE error END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
-					|		IF '(' condition ')' executional_block ELSE END_IF {yyerror(ERROR_EXE_BLOCK_STATEMENT, $6.begin_line);} 
-					|		IF '(' condition ')' executional_block ELSE executional_block error {yyerror(ERROR_END_IF, $6.begin_line);}
+else_statement	: 		ELSE executional_block 
+					|		ELSE error {yyerror(ERROR_EXE_STATEMENT, $1.begin_line);}
+					|		ELSE {yyerror(ERROR_EXE_STATEMENT, $1.begin_line);}
+					|		ELSE executional_block executional_block {yyerror(ERROR_BEGIN, $0.begin_line);}
 					;
 
 executional_block 	:		executional_statements
-					| 		block_statements
+					| 		block_statements ';'
+					|		block_statements {yyerror(ERROR_SEMICOLON);}
 					;
 
 assign_statement	:		ID ASSIGN expression ';' {System.out.println("Assign statement at line " + $1.end_line + ".");}
@@ -122,7 +133,8 @@ foreach_in_statement	:		FOREACH ID IN ID executional_block {System.out.println("
 						|		ID IN ID executional_block {yyerror(ERROR_FOR, $1.begin_line);}
 						|		ID error IN ID executional_block {yyerror(ERROR_FOR, $1.begin_line);}
 						|		FOREACH ID IN error executional_block {yyerror(ERROR_COLECTION_ID, $2.begin_line);}
-					//	|		FOREACH ID IN executional_block {yyerror(ERROR_COLECTION_ID, $2.begin_line);}
+						|		FOREACH IN ID executional_block {yyerror(ERROR_IDENTIFIER, $1.begin_line);}
+						|		FOREACH ID error ID executional_block {yyerror(ERROR_IN, $2.begin_line);}
 						;
 
 print_statement	:		PRINT '('STRING_CONST')' ';' {System.out.println("Print statement at line " + lexer.getLine() + ".");}
@@ -187,8 +199,7 @@ factor 	:		ID
  	private static final String ERROR_END_IF = ": end_if expected.";
  	private static final String ERROR_FOR = ": foreach expected.";
  	private static final String ERROR_IN = ": in expected."; 
- 	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected.";  
- 	private static final String ERROR_EXE_BLOCK_STATEMENT = ": executional block statement was expected.";  
+ 	private static final String ERROR_EXE_STATEMENT = ": executional statement was expected.";   
  	private static final String ERROR_CONDITION = ": condition expected."; 
  	private static final String ERROR_PRINT = ": print expected."; 
  	private static final String ERROR_STRING = ": string expected."; 

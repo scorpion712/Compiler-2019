@@ -6,4 +6,4 @@ begin
 	print(% ; %)
 	print(asd%);	
 	print(%asd);
-end
+end;
