@@ -473,20 +473,20 @@ final static String yyrule[] = {
 "statements : declarative_statements",
 "statements : statements declarative_statements",
 "declarative_statements : variable_declaration_statement",
-"declarative_statements : colection_declaration_statement",
+"declarative_statements : collection_declaration_statement",
 "variable_declaration_statement : type var_list ';'",
 "variable_declaration_statement : error var_list ';'",
 "variable_declaration_statement : type error ';'",
 "variable_declaration_statement : type var_list",
-"colection_declaration_statement : type ID '[' index_list ']' ';'",
-"colection_declaration_statement : error ID '[' index_list ']' ';'",
-"colection_declaration_statement : type error '[' index_list ']' ';'",
-"colection_declaration_statement : type ID index_list ']' ';'",
-"colection_declaration_statement : type ID '[' ']' ';'",
-"colection_declaration_statement : type ID '[' error ']' ';'",
-"colection_declaration_statement : type ID '[' index_list error ';'",
-"colection_declaration_statement : type ID index_list ';'",
-"colection_declaration_statement : type ID '[' index_list ']' error",
+"collection_declaration_statement : type ID '[' index_list ']' ';'",
+"collection_declaration_statement : error ID '[' index_list ']' ';'",
+"collection_declaration_statement : type error '[' index_list ']' ';'",
+"collection_declaration_statement : type ID index_list ']' ';'",
+"collection_declaration_statement : type ID '[' ']' ';'",
+"collection_declaration_statement : type ID '[' error ']' ';'",
+"collection_declaration_statement : type ID '[' index_list error ';'",
+"collection_declaration_statement : type ID index_list ';'",
+"collection_declaration_statement : type ID '[' index_list ']' error",
 "var_list : ID",
 "var_list : var_list ',' ID",
 "var_list : var_list ID",
@@ -585,8 +585,8 @@ final static String yyrule[] = {
 
  	// Constants declared to print error messages
  	private static final String ERROR_IDENTIFIER = ": identifier expected."; 
- 	private static final String ERROR_COLECTION_ID = ": colection identifier expected."; 
- 	private static final String ERROR_INDEX = ": colection index expected.";
+ 	private static final String ERROR_COLECTION_ID = ": collection identifier expected."; 
+ 	private static final String ERROR_INDEX = ": collection index expected.";
  	private static final String ERROR_TYPE = ": type expected.";
  	private static final String ERROR_SEMICOLON = ": ';' expected.";
  	private static final String ERROR_COMMA = ": ',' expected."; 
@@ -662,6 +662,7 @@ final static String yyrule[] = {
         long constant = Long.parseLong(myConst); 
         if (constant < -Math.pow(2, rangeBits) || constant > Math.pow(2, rangeBits) - 1) {
             yyerror(ERROR_CONST, lexer.getLine());
+            
         }
         if (constant < 0) {  
             Token t = SymbolTable.getInstance().getSymbol(myConst.substring(1));
@@ -669,7 +670,7 @@ final static String yyrule[] = {
             SymbolTable.getInstance().addSymbol(new Token(t.getID(), myConst, "negative " + t.getDescription()));
         }
     }
-//#line 601 "Parser.java"
+//#line 602 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -825,7 +826,7 @@ boolean doaction;
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
 //#line 16 "grammar.y"
-{System.out.println("EOF");}
+{System.out.println("Empty program.");}
 break;
 case 5:
 //#line 22 "grammar.y"
@@ -1139,7 +1140,7 @@ case 118:
 //#line 177 "grammar.y"
 {checkRange(val_peek(1).sval, MAX_BITS_INT);}
 break;
-//#line 1066 "Parser.java"
+//#line 1067 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

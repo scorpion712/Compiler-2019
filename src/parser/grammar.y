@@ -13,7 +13,7 @@
 
 %%
 
-program	:		/* empty */ {System.out.println("EOF");}
+program	:		/* empty */ {System.out.println("Empty program.");}
 		|		program_statements
 		;
 
@@ -31,7 +31,7 @@ statements	:		declarative_statements
 			;
 
 declarative_statements	:		variable_declaration_statement  
-						|		colection_declaration_statement
+						|		collection_declaration_statement
 						;
 
 variable_declaration_statement	:		type var_list ';'	{System.out.println("Variable declared at line " + $3.end_line + ".");}   
@@ -40,7 +40,7 @@ variable_declaration_statement	:		type var_list ';'	{System.out.println("Variabl
 								|		type var_list {yyerror(ERROR_SEMICOLON);}  
 								;
 
-colection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + $6.end_line + ".");}
+collection_declaration_statement :		type ID '['index_list']'';' {System.out.println("Colection declared at line " + $6.end_line + ".");}
 								|		error ID '['index_list']'';' {yyerror(ERROR_TYPE);}
 								|		type error '['index_list']'';' {yyerror(ERROR_COLECTION_ID);}
 								|		type ID index_list']'';' {yyerror(ERROR_SQUARE_BRACKET_OPEN);}
@@ -181,8 +181,8 @@ factor 	:		ID
 
  	// Constants declared to print error messages
  	private static final String ERROR_IDENTIFIER = ": identifier expected."; 
- 	private static final String ERROR_COLECTION_ID = ": colection identifier expected."; 
- 	private static final String ERROR_INDEX = ": colection index expected.";
+ 	private static final String ERROR_COLECTION_ID = ": collection identifier expected."; 
+ 	private static final String ERROR_INDEX = ": collection index expected.";
  	private static final String ERROR_TYPE = ": type expected.";
  	private static final String ERROR_SEMICOLON = ": ';' expected.";
  	private static final String ERROR_COMMA = ": ',' expected."; 
@@ -258,6 +258,7 @@ factor 	:		ID
         long constant = Long.parseLong(myConst); 
         if (constant < -Math.pow(2, rangeBits) || constant > Math.pow(2, rangeBits) - 1) {
             yyerror(ERROR_CONST, lexer.getLine());
+
         }
         if (constant < 0) {  
             Token t = SymbolTable.getInstance().getSymbol(myConst.substring(1));
